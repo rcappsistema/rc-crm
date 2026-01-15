@@ -3,297 +3,105 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>RC CRM - v8.4 System</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Lato:wght@300;400;700&family=Montserrat:wght@300;400;600;700&family=Open+Sans:wght@300;400;600&family=Poppins:wght@300;400;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<title>CRM RCF - Mobile (Firebase Ready)</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
 <script crossorigin="anonymous" src="https://kit.fontawesome.com/a2e0e6ad65.js"></script>
 
 <style>
-    /* --- VARIÁVEIS DO TEMA (DINÂMICAS) --- */
-    :root {
-        --primary-color: #2f5d3f;       
-        --secondary-color: #264d34;     
-        --accent-color: #4ade80;        
-        --bg-body: #f0f2f5;
-        --sys-font: 'Segoe UI', sans-serif;
-        --sys-radius: 12px;
-        --sys-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
     /* ESTILOS GERAIS */
-    body { 
-        background: var(--bg-body); 
-        font-family: var(--sys-font); 
-        padding-bottom: 90px; 
-    }
+    body { background: #f8f9fa; font-family: sans-serif; padding-bottom: 80px; }
     
-    /* LOGIN SCREEN */
-    #login-screen {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background-color: var(--primary-color);
-        z-index: 9999;
-        display: flex; flex-direction: column; justify-content: center; align-items: center;
-        color: white;
-    }
-    .login-card {
-        background: white; padding: 2rem; border-radius: var(--sys-radius);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        width: 90%; max-width: 350px; color: #333;
-    }
-
     /* HEADER E NAV */
     header {
-      background-color: var(--primary-color);
+      background-color: #2f5d3f;
       color: white;
       padding: 0.75rem 1rem;
       display: flex; justify-content: space-between; align-items: center;
-      position: sticky; top: 0; z-index: 1000; box-shadow: var(--sys-shadow);
-      transition: background-color 0.3s;
     }
-    header h1 { font-weight: 700; font-size: 1.1rem; margin: 0; letter-spacing: 0.5px; }
+    header h1 { font-weight: bold; font-size: 1.25rem; margin: 0; }
     
-    nav { 
-        display: flex; overflow-x: auto; 
-        background-color: var(--secondary-color); 
-        scroll-behavior: smooth; white-space: nowrap;
-        transition: background-color 0.3s;
-    }
-    nav::-webkit-scrollbar { height: 0px; background: transparent; }
+    nav { display: flex; overflow-x: auto; background-color: #2f5d3f; scroll-behavior: smooth; }
+    nav::-webkit-scrollbar { height: 0px; background: transparent; } /* Oculta scrollbar */
     nav a {
-      display: inline-block;
-      font-weight: 600; flex: 0 0 auto; padding: 12px 5px; text-align: center;
-      color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.7rem;
-      min-width: 75px; border-bottom: 3px solid transparent;
-      transition: all 0.2s;
+      font-weight: bold; flex: 0 0 auto; padding: 10px; text-align: center;
+      color: white; text-decoration: none; font-size: 0.85rem;
+      border-right: 1px solid rgba(255,255,255,0.1); min-width: 80px;
     }
-    nav a:hover { color: white; background-color: rgba(255,255,255,0.05); }
-    nav a.active { color: #fff; border-bottom: 3px solid var(--accent-color); background-color: rgba(255,255,255,0.1); }
-    nav a i { font-size: 1.2rem; margin-bottom: 4px; display: block; }
+    nav a:last-child { border-right: none; }
+    nav a:hover, nav a.active { background-color: #3d7a4f; }
 
     /* UTILS */
-    .form-label { font-weight: 600; font-size: 0.85rem; margin-top: 0.5rem; color: #555;}
-    .card { border: none; box-shadow: var(--sys-shadow); border-radius: var(--sys-radius); background: #fff; }
+    .form-label { font-weight: 600; font-size: 0.9rem; margin-top: 0.5rem;}
+    .card { border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     .btn-custom-action { font-size: 0.8rem; padding: 4px 8px; }
-    .module-screen { animation: fadeIn 0.3s ease-in-out; }
-    
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* CALENDÁRIO MODERNO */
-    .calendar-wrapper { background:#fff; border-radius:12px; box-shadow:var(--sys-shadow); padding:10px; }
-    .calendar-weekdays {
-        display:grid;
-        grid-template-columns:repeat(7,1fr);
-        font-size:0.7rem;
-        text-transform:uppercase;
-        color:#6c757d;
-        text-align:center;
-        margin-bottom:6px;
-        font-weight:600;
+    /* CALENDÁRIO */
+    .calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; font-size: 0.75rem; text-align: center; }
+    .calendar-day { 
+      background: #e9ecef; border-radius: 4px; min-height: 40px; 
+      display: flex; flex-direction: column; align-items: center; justify-content: start; padding-top: 4px;
+      cursor: pointer;
     }
-    .calendar {
-        display:grid;
-        grid-template-columns:repeat(7,1fr);
-        gap:6px;
-        font-size:0.8rem;
-        text-align:center;
-    }
-    .calendar-day {
-        background:#fff;
-        border:1px solid #e9ecef;
-        border-radius:10px;
-        min-height:70px;
-        padding:6px 4px;
-        cursor:pointer;
-        transition:all .2s;
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-    }
-    .calendar-day:hover {
-        background:#f8fafc;
-        transform:translateY(-2px);
-        box-shadow:0 4px 8px rgba(0,0,0,.06);
-    }
-    .calendar-day.inactive {
-        opacity:.4;
-        cursor:default;
-        background:#f8f9fa;
-    }
-    .calendar-day.today {
-        border:2px solid var(--primary-color);
-    }
-    .calendar-day span {
-        font-weight:700;
-        margin-bottom:4px;
-        color:#2d3748;
-    }
-    .barra-cor {
-        height:5px;
-        width:85%;
-        border-radius:4px;
-        margin-bottom:3px;
-    }
+    .calendar-day span { font-weight: bold; margin-bottom: 2px; }
+    .barra-cor { height: 4px; width: 80%; margin-bottom: 2px; border-radius: 2px; }
     
+    .cal-verde { background-color: #198754; } 
+    .cal-azul { background-color: #0d6efd; }  
+    .cal-roxo { background-color: #6f42c1; }  
+    .cal-laranja { background-color: #fd7e14; } 
+
     .legenda { font-size: 0.7rem; display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
     .legenda-item { display: flex; align-items: center; gap: 5px; }
     .legenda-bolinha { width: 10px; height: 10px; border-radius: 50%; }
 
-    /* FINANCEIRO MODERNO */
-    .fin-card { position: relative; overflow: hidden; border-radius: var(--sys-radius); }
-    .fin-card-icon { position: absolute; right: 10px; top: 10px; opacity: 0.15; font-size: 2.5rem; }
-    .fin-value { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
-    .fin-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
-    .bg-gradient-success { background: linear-gradient(45deg, #198754, #20c997); color: white; }
-    .bg-gradient-danger { background: linear-gradient(45deg, #dc3545, #ef233c); color: white; }
-    .bg-gradient-info { background: linear-gradient(45deg, #0d6efd, #0dcaf0); color: white; }
-    .table-fin th { font-size: 0.75rem; text-transform: uppercase; color: #6c757d; background: #f8f9fa; border: none;}
-    .table-fin td { font-size: 0.85rem; vertical-align: middle; border-bottom: 1px solid #f0f0f0; }
-    .btn-action-fin { padding: 2px 6px; font-size: 0.75rem; border-radius: 4px; }
-
-    /* BUILDER */
-    .builder-area { background: #fff; padding: 15px; border-radius: var(--sys-radius); margin-bottom: 20px; box-shadow: var(--sys-shadow); }
-    .field-config-card { border-left: 4px solid var(--primary-color); background: #fdfdfd; padding: 10px; margin-bottom: 10px; position: relative; }
+    /* ESTILOS DO CONSTRUTOR (Novo) */
+    .builder-area { background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    .field-config-card { border-left: 4px solid #198754; background: #fdfdfd; padding: 10px; margin-bottom: 10px; position: relative; }
     .btn-delete-field { position: absolute; top: 5px; right: 5px; color: #dc3545; background: none; border: none; }
-    
-    /* DYNAMIC CARDS */
-    .dynamic-card {
-        background: #fff;
-        border-radius: var(--sys-radius);
-        border: 1px solid #edf2f7;
-        box-shadow: var(--sys-shadow);
-        transition: all 0.2s ease;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-    }
-    .dynamic-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px rgba(0,0,0,0.08); border-color: #cbd5e0; }
-    .dynamic-card-header { padding: 12px 15px; background: #f8fafc; border-bottom: 1px solid #edf2f7; font-weight: 700; color: #2d3748; display: flex; justify-content: space-between; align-items: center; }
-    .dynamic-card-body { padding: 15px; flex-grow: 1; }
-    .dynamic-card-row { margin-bottom: 8px; font-size: 0.85rem; color: #4a5568; display: flex; align-items: center; }
-    .dynamic-card-row i { width: 20px; color: #a0aec0; text-align: center; margin-right: 8px; }
-    .dynamic-card-footer { padding: 10px 15px; background: #fff; border-top: 1px solid #edf2f7; }
-    .fin-control-box { background: #f0fff4; border: 1px dashed #48bb78; border-radius: 6px; padding: 8px; margin-top: 10px; }
-    
-    /* VARIAVEIS MSG */
-    .var-badge { cursor: pointer; transition: 0.2s; }
-    .var-badge:hover { background-color: var(--primary-color) !important; color: white !important; }
-
-    /* CONFIGURAÇÃO */
-    .color-swatch {
-        width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: transform 0.2s;
-        display: inline-block; margin: 3px;
-    }
-    .color-swatch:hover { transform: scale(1.15); }
-    
-    /* NOVA CSS PARA LEGENDA MODERNA */
-    .legend-chip {
-        display: inline-flex;
-        align-items: center;
-        padding: 6px 12px;
-        background: #fff;
-        border: 1px solid #e9ecef;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 500;
-        color: #495057;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        transition: all 0.2s;
-    }
-    .legend-chip:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 6px rgba(0,0,0,0.08);
-    }
-    .legend-chip-dot {
-        width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; border: 1px solid rgba(0,0,0,0.1);
-    }
-    .legend-chip-remove {
-        margin-left: 8px;
-        color: #adb5bd;
-        cursor: pointer;
-        font-size: 1rem;
-        line-height: 1;
-        transition: color 0.2s;
-    }
-    .legend-chip-remove:hover { color: #dc3545; }
-
-    .user-badge { font-size: 0.7rem; padding: 4px 8px; border-radius: 12px; }
-    .badge-perm { background: #e9ecef; color: #495057; margin-right: 2px; margin-bottom: 2px; display: inline-block; }
 </style>
 </head>
 <body>
 
-<div id="login-screen">
-    <div class="login-card">
-        <div class="text-center mb-4">
-            <h2 id="login-brand" class="fw-bold" style="color: var(--primary-color);">RC CRM</h2>
-            <small class="text-muted">Acesso Restrito</small>
-        </div>
-        <form onsubmit="event.preventDefault(); doLogin();">
-            <div class="mb-3">
-                <label class="form-label">Usuário</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                    <input type="text" id="loginUser" class="form-control" placeholder="Usuário" required>
-                </div>
-            </div>
-            <div class="mb-4">
-                <label class="form-label">Senha</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                    <input type="password" id="loginPass" class="form-control" placeholder="Senha" required>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-dark w-100 py-2" style="background-color: var(--primary-color); border:none;">ENTRAR</button>
-        </form>
-        <p class="text-center mt-3 mb-0 small text-muted">v8.4 - Secure</p>
-    </div>
-</div>
-
 <header>
-  <div>
-      <h1 id="header-title">RC CRM</h1>
-      <span class="text-white small" style="opacity: 0.8;" id="header-subtitle">Gestão Inteligente</span>
-  </div>
-  <div class="d-flex gap-2 align-items-center">
-    <button class="btn btn-sm text-white opacity-75" style="background-color: transparent; border: 1px solid rgba(255,255,255,0.25);" onclick="abrirDevInfo()" title="Desenvolvedor">
-        Dev
-    </button>
-    <button class="btn btn-sm text-white" style="background-color: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.15);" onclick="abrirConfiguracaoGeral()">
-        <i class="fas fa-gear fa-solid fa-lg"></i>
-    </button>
-  </div>
+  <h1>CRM RCF</h1>
+  <span class="text-white small">Mobile v4.0 Pro</span>
 </header>
 
-<nav id="mainNav"></nav>
+<nav id="mainNav">
+  <a class="navbtn active" href="#" onclick="mostrarTela('tela-inicio', this)"><i class="fas fa-home"></i><br/>Início</a>
+  <a class="navbtn" href="#" onclick="mostrarTela('tela-clientes', this)"><i class="fas fa-user"></i><br/>Clientes</a>
+  <a class="navbtn" href="#" onclick="mostrarTela('tela-agenda', this)"><i class="fas fa-calendar-alt"></i><br/>Agenda</a>
+  <a class="navbtn" href="#" onclick="mostrarTela('tela-albuns', this)"><i class="fas fa-book-open"></i><br/>Álbuns</a>
+  <a class="navbtn" href="#" onclick="mostrarTela('tela-financeiro', this)"><i class="fas fa-dollar-sign"></i><br/>Financeiro</a>
+  <a class="navbtn" href="#" onclick="mostrarTela('tela-ferramentas', this)"><i class="fas fa-cogs"></i><br/>Builder</a>
+  <a class="navbtn" href="#" onclick="mostrarTela('tela-extra1', this)"><i class="fas fa-envelope"></i><br/>Msgs</a>
+  </nav>
 
 <main class="container py-3">
 
-  <div id="tela-inicio" class="module-screen">
+  <div id="tela-inicio">
     <h5 class="mb-3">📅 Próximos Agendamentos</h5>
+    
     <div class="d-flex justify-content-between align-items-center mb-2">
       <button class="btn btn-sm btn-outline-secondary" onclick="mudarMes(-1)">◀</button>
       <span id="mesAtualLabel" class="fw-bold"></span>
       <button class="btn btn-sm btn-outline-secondary" onclick="mudarMes(1)">▶</button>
     </div>
+
     <div id="eventosDoDia" class="alert alert-info py-2" style="display:none; font-size: 0.8rem;"></div>
-    
-    <div class="calendar-wrapper mb-3">
-        <div class="calendar-weekdays">
-            <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div>
-            <div>Qui</div><div>Sex</div><div>Sáb</div>
-        </div>
-        <div id="calendarioAgendamentos"></div>
+    <div id="calendarioAgendamentos" class="mb-3"></div>
+
+    <div class="legenda">
+      <div class="legenda-item"><div class="legenda-bolinha cal-verde"></div> Infantil/Família</div>
+      <div class="legenda-item"><div class="legenda-bolinha cal-azul"></div> Aniversário</div>
+      <div class="legenda-item"><div class="legenda-bolinha cal-roxo"></div> Gestante</div>
+      <div class="legenda-item"><div class="legenda-bolinha cal-laranja"></div> Smash</div>
     </div>
-    
-    <div class="legenda" id="legendaCalendario"></div>
     <hr>
     <div class="d-flex justify-content-end gap-2 mb-2">
         <button class="btn btn-sm btn-outline-dark" onclick="toggleAgendamentos()" id="botaoToggleAgendamentos">👁️ Ocultar Lista</button>
     </div>
-    <ul class="list-group small mb-4 shadow-sm" id="listaProximosAgendamentos">
+    <ul class="list-group small mb-4" id="listaProximosAgendamentos">
       <li class="list-group-item">Carregando...</li>
     </ul>
     <div class="card bg-light">
@@ -305,26 +113,29 @@
     </div>
   </div>
 
-  <div id="tela-clientes" class="module-screen" style="display:none;">
+  <div id="tela-clientes" style="display:none;">
     <h5 class="mb-3 d-flex justify-content-between align-items-center">
       👤 Gestão de Clientes
       <button class="btn btn-sm btn-outline-success" onclick="toggleImportacaoTexto()">📋 Importar</button>
     </h5>
+
     <div id="areaImportacao" class="card mb-3 p-2 bg-light" style="display:none;">
         <textarea class="form-control form-control-sm mb-2" id="campoTextoImportacao" placeholder="Cole o texto do WhatsApp aqui..." rows="3"></textarea>
         <button class="btn btn-success btn-sm w-100" onclick="importarClientePorTexto()">Processar Texto</button>
     </div>
+
     <div class="row g-2 mb-3">
         <div class="col-4">
             <label class="form-label">ID (Auto)</label>
             <input class="form-control" id="buscarIdCliente" placeholder="Novo" disabled type="text"/>
         </div>
         <div class="col-8">
-            <label class="form-label">Buscar por Nome (Editar)</label>
+            <label class="form-label">Buscar por Nome</label>
             <input class="form-control" id="buscarNomeCliente" list="sugestoesClientes" onchange="preencherClientePorNome(this.value)" placeholder="Digite para buscar..." type="text"/>
             <datalist id="sugestoesClientes"></datalist>
         </div>
     </div>
+
     <form onsubmit="event.preventDefault(); salvarCliente();">
         <div class="mb-2">
             <label class="form-label">Nome Completo</label>
@@ -351,9 +162,10 @@
                 <option value="Não">Não</option>
             </select>
         </div>
+        
         <div class="d-grid gap-2">
-            <button class="btn btn-primary" type="submit" id="btnSalvarCliente" style="background-color: var(--primary-color); border:none;">💾 Salvar Cliente</button>
-            <button class="btn btn-outline-secondary" type="button" onclick="limparFormularioCliente()">Limpar / Novo</button>
+            <button class="btn btn-primary" type="submit">💾 Salvar Cliente</button>
+            <button class="btn btn-outline-secondary" type="button" onclick="limparFormularioCliente()">Limpar Campos</button>
         </div>
     </form>
     <hr class="my-4">
@@ -364,11 +176,12 @@
             <button class="btn btn-sm btn-outline-dark" onclick="ordenarClientesPorID()">1-9</button>
         </div>
     </div>
-    <ul class="list-group small shadow-sm" id="listaClientes"></ul>
+    <ul class="list-group small" id="listaClientes"></ul>
   </div>
 
-  <div id="tela-agenda" class="module-screen" style="display:none;">
+  <div id="tela-agenda" style="display:none;">
     <h5 class="mb-3">🗓️ Novo Agendamento</h5>
+    
     <div class="row g-2 mb-3">
         <div class="col-4">
             <label class="form-label">Buscar ID</label>
@@ -381,6 +194,7 @@
             </select>
         </div>
     </div>
+
     <div class="row g-2 mb-2">
         <div class="col-12">
             <label class="form-label">Data</label>
@@ -397,13 +211,16 @@
     </div>
     <div class="mb-2">
         <label class="form-label">Tipo de Sessão</label>
-        <div class="input-group">
-            <select class="form-select" id="tipoSessao">
-                </select>
-            <button class="btn btn-outline-secondary" type="button" onclick="abrirModalTiposSessao()" title="Editar ou Adicionar Tipos">
-                <i class="fas fa-pen"></i>
-            </button>
-        </div>
+        <select class="form-select" id="tipoSessao">
+            <option value="">Selecione...</option>
+            <option value="Aniversário">Aniversário</option>
+            <option value="Ensaio Infantil">Ensaio Infantil</option>
+            <option value="Debutante">Debutante</option>
+            <option value="Ensaio Gestante">Ensaio Gestante</option>
+            <option value="Ensaio Casual">Ensaio Casual</option>
+            <option value="Ensaio Família">Ensaio Família</option>
+            <option value="Smash The Cake">Smash The Cake</option>
+        </select>
     </div>
     <div class="mb-2">
         <label class="form-label">Tema / Obs</label>
@@ -424,12 +241,10 @@
                     <option value="Pré Festa">Pré Festa</option>
                     <option value="Cobertura 2h">Cobertura 2h</option>
                     <option value="Cobertura 3h">Cobertura 3h</option>
-                    <option value="Cobertura 4h">Cobertura 4h</option>
                 </optgroup>
                 <optgroup label="Cobertura + Álbum">
                     <option value="Cobertura 2h + Álbum">Cobertura 2h + Álbum</option>
                     <option value="Cobertura 3h + Álbum">Cobertura 3h + Álbum</option>
-                    <option value="Cobertura 4h + Álbum">Cobertura 4h + Álbum</option>
                 </optgroup>
             </select>
         </div>
@@ -453,7 +268,7 @@
     </div>
   </div>
 
-  <div id="tela-albuns" class="module-screen" style="display:none;">
+  <div id="tela-albuns" style="display:none;">
     <h5 class="mb-3">📚 Controle de Álbuns</h5>
     <div class="card p-3 mb-3">
         <div class="mb-2">
@@ -480,248 +295,127 @@
                 </select>
             </div>
         </div>
-        <button class="btn btn-primary w-100" onclick="salvarAlbum()" style="background-color: var(--primary-color); border:none;">Atualizar Status</button>
+        <button class="btn btn-primary w-100" onclick="salvarAlbum()">Atualizar Status</button>
     </div>
     <h6>Álbuns em Andamento</h6>
     <ul class="list-group small" id="listaAlbuns"></ul>
   </div>
 
-  <div id="tela-financeiro" class="module-screen" style="display:none;">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="m-0 fw-bold text-success"><i class="fas fa-chart-pie me-2"></i>Fluxo de Caixa</h5>
-        <div class="d-flex gap-2">
-            <select id="filtroMesFin" class="form-select form-select-sm shadow-sm border-0" style="width:110px;" onchange="atualizarDashboardFinanceiro()"></select>
-            <select id="filtroAnoFin" class="form-select form-select-sm shadow-sm border-0" style="width:80px;" onchange="atualizarDashboardFinanceiro()"></select>
-        </div>
+  <div id="tela-financeiro" style="display:none;">
+    <h5 class="mb-3">💰 Dashboard Financeiro</h5>
+    <div class="btn-group w-100 mb-3">
+        <button class="btn btn-outline-primary active" onclick="exibirDashboardFinanceiro()">Resumo</button>
+        <button class="btn btn-outline-secondary" onclick="gerarRelatorioDespesas()">Extrato</button>
     </div>
-
-    <button class="btn btn-sm btn-outline-success w-100 mb-3" onclick="abrirModalTransacao()">
-        <i class="fas fa-plus-circle"></i> Novo Lançamento Manual
-    </button>
-
-    <div class="row g-2 mb-4">
-        <div class="col-12">
-            <div class="card fin-card bg-gradient-info text-white shadow">
-                <div class="card-body p-3">
-                    <i class="fas fa-wallet fin-card-icon"></i>
-                    <div class="fin-label">Saldo do Período</div>
-                    <div class="fin-value" id="finSaldo">R$ 0,00</div>
-                    <small class="opacity-75" style="font-size:0.7rem">Receitas - Despesas</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="card fin-card bg-white border-start border-5 border-success shadow-sm">
-                <div class="card-body p-2 ps-3">
-                    <div class="text-success small fw-bold text-uppercase">Entradas</div>
-                    <div class="h5 fw-bold mb-0" id="finReceita">R$ 0,00</div>
-                    <small class="text-muted" style="font-size:0.65rem">Sessões + Manuais</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="card fin-card bg-white border-start border-5 border-danger shadow-sm">
-                <div class="card-body p-2 ps-3">
-                    <div class="text-danger small fw-bold text-uppercase">Saídas</div>
-                    <div class="h5 fw-bold mb-0" id="finDespesa">R$ 0,00</div>
-                    <small class="text-muted" style="font-size:0.65rem">Operacional + Avulso</small>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card border-0 shadow-sm mb-4">
-        <div class="card-header bg-white border-bottom-0 pt-3 pb-2">
-            <h6 class="m-0 fw-bold text-muted"><i class="fas fa-list-ul me-2"></i>Extrato de Lançamentos</h6>
-        </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover table-fin mb-0" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th class="ps-3">Data</th>
-                            <th>Descrição</th>
-                            <th>Valor</th>
-                            <th class="text-end pe-3">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelaFinanceiraBody"></tbody>
-                </table>
-            </div>
-            <div id="emptyStateFin" class="text-center py-4 text-muted" style="display:none;">
-                <i class="fas fa-receipt fa-2x mb-2 opacity-25"></i>
-                <p class="small m-0">Nenhum lançamento neste mês.</p>
-            </div>
-        </div>
-    </div>
+    <div id="resultadoRelatorio"></div>
   </div>
 
-  <div id="tela-ferramentas" class="module-screen" style="display:none;">
+  <div id="tela-ferramentas" style="display:none;">
     <h5 class="mb-3">🛠️ Construtor de Módulos (Builder)</h5>
-    <p class="small text-muted">Crie e edite novas abas e formulários para o sistema.</p>
+    <p class="small text-muted">Crie novas abas e formulários complexos para seu CRM.</p>
 
     <ul class="nav nav-tabs mb-3" id="builderTab">
         <li class="nav-item">
             <a class="nav-link active" onclick="switchBuilderTab('gerenciar')" href="#">Gerenciar Abas</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" onclick="switchBuilderTab('criar')" href="#">➕ Nova / Editar</a>
+            <a class="nav-link" onclick="switchBuilderTab('criar')" href="#">➕ Nova Aba</a>
         </li>
     </ul>
 
     <div id="builder-gerenciar">
-        <div id="listaModulosCriados" class="list-group shadow-sm"></div>
+        <div id="listaModulosCriados" class="list-group">
+            </div>
     </div>
 
     <div id="builder-criar" style="display:none;">
-        <input type="hidden" id="builderIdModulo"> 
         <div class="builder-area">
             <h6 class="text-primary border-bottom pb-2">1. Configuração da Aba</h6>
             <div class="mb-2">
-                <label class="form-label small">Nome da Aba (Ex: Vendas, Fornecedores)</label>
+                <label class="form-label small">Nome da Aba (Ex: Fornecedores)</label>
                 <input type="text" id="builderNomeModulo" class="form-control" placeholder="Nome no Menu">
             </div>
             <div class="mb-2">
-                <label class="form-label small">Ícone (FontAwesome sem 'fa-')</label>
+                <label class="form-label small">Ícone (FontAwesome)</label>
                 <div class="input-group">
                     <span class="input-group-text">fa-</span>
-                    <input type="text" id="builderIconeModulo" class="form-control" placeholder="shopping-bag, box, star...">
+                    <input type="text" id="builderIconeModulo" class="form-control" placeholder="box, truck, star...">
                 </div>
             </div>
-
+            
             <h6 class="text-primary border-bottom pb-2 mt-4">2. Estrutura de Campos</h6>
-            <div id="builderAreaCampos"></div>
+            <div id="builderAreaCampos">
+                </div>
 
-            <div class="d-flex gap-2 mt-3 overflow-auto pb-2 flex-wrap">
+            <div class="d-flex gap-2 mt-3 overflow-auto pb-2">
                 <button class="btn btn-sm btn-outline-dark text-nowrap" onclick="addBuilderField('text')">+ Texto</button>
                 <button class="btn btn-sm btn-outline-dark text-nowrap" onclick="addBuilderField('number')">+ Número</button>
                 <button class="btn btn-sm btn-outline-success text-nowrap" onclick="addBuilderField('money')">+ R$ Moeda</button>
                 <button class="btn btn-sm btn-outline-dark text-nowrap" onclick="addBuilderField('date')">+ Data</button>
                 <button class="btn btn-sm btn-outline-dark text-nowrap" onclick="addBuilderField('select')">+ Lista</button>
                 <button class="btn btn-sm btn-outline-dark text-nowrap" onclick="addBuilderField('multiselect')">+ Checkbox</button>
-                <button class="btn btn-sm btn-outline-primary text-nowrap" onclick="addBuilderField('client_ref')">+ Cliente (Link)</button> <button class="btn btn-sm btn-outline-warning text-dark text-nowrap" onclick="addBuilderField('formula')">+ Fórmula 𝑓(x)</button>
+                <button class="btn btn-sm btn-outline-warning text-dark text-nowrap" onclick="addBuilderField('formula')">+ Fórmula 𝑓(x)</button>
             </div>
 
             <hr>
             <div class="d-grid">
-                <button class="btn btn-success" id="btnSalvarModulo" onclick="salvarNovoModulo()">💾 Salvar Aba e Campos</button>
+                <button class="btn btn-success" onclick="salvarNovoModulo()">💾 Salvar e Criar Aba</button>
                 <button class="btn btn-outline-secondary mt-2" onclick="cancelarEdicaoModulo()">Cancelar</button>
             </div>
         </div>
     </div>
-  </div>
 
-  <div id="tela-extra1" class="module-screen" style="display:none;">
-    <h5 class="mb-3">📩 Editor de Mensagens</h5>
-    <ul class="nav nav-pills nav-fill mb-3" id="msgTabs">
-        <li class="nav-item">
-            <a class="nav-link active" onclick="switchMsgTab('gerar')" href="#">Gerar Mensagem</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" onclick="switchMsgTab('modelos')" href="#">Gerenciar Modelos</a>
-        </li>
-    </ul>
-    <div id="msg-tab-gerar">
-        <div class="card p-3 mb-3 bg-white shadow-sm">
-            <div class="row g-2 mb-2">
-                <div class="col-4">
-                    <label class="form-label small">ID Agendamento</label>
-                    <input class="form-control form-control-sm" id="idAgendamentoTexto" placeholder="ID" type="number"/>
-                </div>
-                <div class="col-8">
-                    <label class="form-label small">Modelo de Mensagem</label>
-                    <select class="form-select form-select-sm" id="selectModeloMsg" onchange="gerarTextoWhatsAppPorID()">
-                        <option value="">Selecione um tipo...</option>
-                    </select>
-                </div>
-            </div>
-            <div class="d-flex justify-content-end mb-2">
-                 <button class="btn btn-sm btn-primary w-100" onclick="gerarTextoWhatsAppPorID()">🚀 Gerar Texto</button>
-            </div>
-            <label class="form-label small">Resultado:</label>
-            <textarea class="form-control form-control-sm mb-2" id="mensagemWhatsTexto" rows="8" placeholder="O texto gerado aparecerá aqui..."></textarea>
-            <div class="d-flex gap-2">
-                <button class="btn btn-success btn-sm flex-grow-1" onclick="copiarTexto('mensagemWhatsTexto')"><i class="fas fa-copy"></i> Copiar</button>
-                <button class="btn btn-outline-success btn-sm" onclick="abrirWhatsDireto()"><i class="fab fa-whatsapp"></i> Abrir App</button>
-            </div>
+    <hr class="my-4">
+    <h6 class="mb-2">Backup & Dados</h6>
+    <div class="row g-2">
+        <div class="col-6">
+            <button class="btn btn-light border w-100 py-2 small" onclick="exportarBackup()">
+                <i class="fas fa-download"></i> Baixar Dados
+            </button>
         </div>
-    </div>
-    <div id="msg-tab-modelos" style="display:none;">
-        <div class="card p-3 bg-light border-0 mb-3">
-            <h6 class="text-success border-bottom pb-2">📝 Criar/Editar Modelo</h6>
-            <input type="hidden" id="editorMsgId">
-            <div class="mb-2">
-                <label class="form-label small">Nome do Tipo (Ex: Confirmação, Cobrança)</label>
-                <input type="text" class="form-control" id="editorMsgTitulo">
-            </div>
-            <div class="mb-2">
-                <label class="form-label small">Conteúdo do Modelo</label>
-                <div class="d-flex gap-1 flex-wrap mb-2">
-                    <span class="badge bg-secondary var-badge" onclick="insertVar('{nome}')">{nome}</span>
-                    <span class="badge bg-secondary var-badge" onclick="insertVar('{data}')">{data}</span>
-                    <span class="badge bg-secondary var-badge" onclick="insertVar('{hora}')">{hora}</span>
-                    <span class="badge bg-secondary var-badge" onclick="insertVar('{pacote}')">{pacote}</span>
-                    <span class="badge bg-secondary var-badge" onclick="insertVar('{valor}')">{valor}</span>
-                    <span class="badge bg-secondary var-badge" onclick="insertVar('{sinal}')">{sinal}</span>
-                    <span class="badge bg-secondary var-badge" onclick="insertVar('{restante}')">{restante}</span>
-                    <span class="badge bg-secondary var-badge" onclick="insertVar('{id}')">{id}</span>
-                </div>
-                <textarea class="form-control" id="editorMsgConteudo" rows="6" placeholder="Escreva aqui. Use as variáveis acima para dados automáticos."></textarea>
-            </div>
-            <div class="d-flex gap-2">
-                <button class="btn btn-success flex-grow-1" onclick="salvarModeloMsg()">💾 Salvar Modelo</button>
-                <button class="btn btn-outline-secondary" onclick="limparEditorMsg()">Limpar</button>
-            </div>
+        <div class="col-6">
+             <label class="btn btn-light border w-100 py-2 small" style="cursor: pointer;">
+                <input type="file" hidden accept=".json" onchange="importarBackup(event)">
+                <i class="fas fa-upload"></i> Restaurar
+            </label>
         </div>
-        <h6 class="mt-4 mb-2">Modelos Salvos</h6>
-        <ul class="list-group small" id="listaModelosMsg"></ul>
     </div>
   </div>
 
-  <div id="tela-dinamica-container" class="module-screen" style="display:none;">
+  <div id="tela-extra1" style="display:none;">
+    <h5 class="mb-3">📩 Gerador de Mensagens</h5>
+    <div class="card p-3 mb-3 bg-white">
+        <h6>Confirmação de Agendamento</h6>
+        <div class="input-group mb-2">
+            <input class="form-control" id="idAgendamentoTexto" placeholder="ID do Agendamento" type="number"/>
+            <button class="btn btn-outline-primary" onclick="gerarTextoWhatsAppPorID()">Gerar</button>
+        </div>
+        <textarea class="form-control form-control-sm mb-2" id="mensagemWhatsTexto" rows="8"></textarea>
+        <button class="btn btn-success btn-sm w-100" onclick="copiarTexto('mensagemWhatsTexto')">Copiar para WhatsApp</button>
+    </div>
+  </div>
+
+  <div id="tela-dinamica-container" style="display:none;">
       <div class="d-flex justify-content-between align-items-center mb-3">
-          <h5 id="titulo-dinamico" class="m-0 fw-bold text-dark">Módulo</h5>
-          <div>
-            <button class="btn btn-sm btn-outline-secondary me-1" onclick="atalhoEditarEstrutura()">⚙️ Estrutura</button>
-            <button class="btn btn-sm btn-primary" onclick="alternarFormularioDinamico()">+ Novo Registro</button>
-          </div>
+          <h5 id="titulo-dinamico">Módulo</h5>
+          <button class="btn btn-sm btn-primary" onclick="alternarFormularioDinamico()">+ Novo</button>
       </div>
 
-      <div id="form-dinamico-wrapper" class="card mb-4 shadow-sm border-0" style="display:none; background: #fff;">
-          <div class="card-header bg-success text-white fw-bold small">
-              <i class="fas fa-edit me-2"></i> Criar / Editar Registro
-          </div>
-          <div class="card-body">
-              <form id="form-dinamico" onsubmit="event.preventDefault(); salvarRegistroDinamico();">
-                  <input type="hidden" id="editIdDinamico"> 
-                  <div id="campos-dinamicos-area" class="row g-3"></div>
-                  
-                  <div id="area-integracao-financeira" class="mt-4 p-3 border rounded bg-light position-relative" style="display:none; border-left: 5px solid #0dcaf0 !important;">
-                      <h6 class="text-info small fw-bold mb-2"><i class="fas fa-coins me-1"></i> Configuração Financeira</h6>
-                      <p class="small text-muted mb-2">Este registro envolve valores? Configure abaixo para lançar no fluxo de caixa automaticamente.</p>
-                      
-                      <input type="hidden" id="fin_source_money_field">
-                      <input type="hidden" id="fin_source_date_field">
-                      
-                      <div class="mb-2">
-                          <label class="form-label small">Destino no Financeiro</label>
-                          <select class="form-select form-select-sm" id="fin_integracao_tipo">
-                              <option value="none">🚫 Não lançar / Apenas registro</option>
-                              <option value="receita">🟢 Receita (Entrada)</option>
-                              <option value="despesa">🔴 Despesa (Saída)</option>
-                          </select>
-                      </div>
-                  </div>
-
-                  <div class="d-flex gap-2 mt-4 pt-2 border-top">
-                      <button type="submit" class="btn btn-success flex-grow-1" id="btnSalvarDinamico">Salvar Registro</button>
-                      <button type="button" class="btn btn-outline-secondary" onclick="alternarFormularioDinamico()">Cancelar</button>
-                  </div>
-              </form>
-          </div>
+      <div id="form-dinamico-wrapper" class="card p-3 bg-light mb-4 shadow-sm" style="display:none;">
+          <h6 class="text-success mb-3">Novo Registro</h6>
+          <form id="form-dinamico" onsubmit="event.preventDefault(); salvarRegistroDinamico();">
+              <div id="campos-dinamicos-area" class="row g-2"></div>
+              <div class="d-flex gap-2 mt-3">
+                  <button type="submit" class="btn btn-success flex-grow-1">Salvar</button>
+                  <button type="button" class="btn btn-secondary" onclick="alternarFormularioDinamico()">Cancelar</button>
+              </div>
+          </form>
       </div>
 
-      <div id="lista-dinamica-registros" class="row g-3"></div>
+      <div class="card">
+          <div class="card-header bg-white fw-bold small">Registros Salvos</div>
+          <ul class="list-group list-group-flush small" id="lista-dinamica-registros"></ul>
+      </div>
   </div>
 
 </main>
@@ -735,9 +429,6 @@
       </div>
       <div class="modal-body">
         <input type="hidden" id="finalizarId">
-        <div class="alert alert-warning small">
-            <i class="fas fa-info-circle"></i> O valor restante será lançado como receita. Adicione as despesas abaixo:
-        </div>
         <div class="mb-2">
             <label>Gastos Uber/Transporte</label>
             <input class="form-control" type="number" id="finalizarUber" value="0">
@@ -759,247 +450,12 @@
   </div>
 </div>
 
-<div class="modal fade" id="modalConfigGlobal" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content border-0">
-        <div class="modal-header bg-dark text-white">
-          <h5 class="modal-title fs-6"><i class="fas fa-cog me-2"></i> Configurações do Sistema</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body bg-light">
-            <div class="row">
-                <div class="col-md-3 border-end">
-                    <div class="nav flex-column nav-pills" id="configTabs">
-                        <a class="nav-link active mb-1" onclick="switchConfigTab('aparencia')" href="#"><i class="fas fa-paint-brush me-2"></i> Aparência</a>
-                        <a class="nav-link mb-1" onclick="switchConfigTab('menu')" href="#"><i class="fas fa-list me-2"></i> Menu Global</a>
-                        <a class="nav-link mb-1" onclick="switchConfigTab('usuarios')" href="#"><i class="fas fa-users-cog me-2"></i> Usuários</a>
-                    </div>
-                </div>
-
-                <div class="col-md-9 pt-2 pt-md-0">
-                    
-                    <div id="tab-config-aparencia">
-                        <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">Identidade Visual</h6>
-                        
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-8">
-                                <label class="form-label small text-muted">Nome do Aplicativo</label>
-                                <input type="text" id="cfgAppName" class="form-control" placeholder="RC CRM">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label small text-muted">Tipografia</label>
-                                <select id="cfgAppFont" class="form-select">
-                                    <option value="'Segoe UI', sans-serif">Padrão (Sistema)</option>
-                                    <optgroup label="Modernas">
-                                        <option value="'Inter', sans-serif">Inter</option>
-                                        <option value="'Roboto', sans-serif">Roboto</option>
-                                        <option value="'Poppins', sans-serif">Poppins</option>
-                                        <option value="'Montserrat', sans-serif">Montserrat</option>
-                                    </optgroup>
-                                    <optgroup label="Clássicas">
-                                        <option value="'Lato', sans-serif">Lato</option>
-                                        <option value="'Open Sans', sans-serif">Open Sans</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div>
-
-                        <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">Estilo & Cores</h6>
-                        
-                        <div class="mb-3">
-                            <label class="form-label small d-block mb-2">Cor Principal</label>
-                            <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
-                                <div class="color-swatch" style="background:#2f5d3f" onclick="pickColor('#2f5d3f')"></div>
-                                <div class="color-swatch" style="background:#1e3a8a" onclick="pickColor('#1e3a8a')"></div>
-                                <div class="color-swatch" style="background:#0f172a" onclick="pickColor('#0f172a')"></div>
-                                <div class="color-swatch" style="background:#be123c" onclick="pickColor('#be123c')"></div>
-                                <div class="color-swatch" style="background:#7c3aed" onclick="pickColor('#7c3aed')"></div>
-                                <div class="color-swatch" style="background:#c2410c" onclick="pickColor('#c2410c')"></div>
-                                <div class="color-swatch" style="background:#059669" onclick="pickColor('#059669')"></div>
-                                <input type="color" id="cfgAppColor" class="form-control form-control-color shadow-sm border-0" style="width:40px;height:40px;padding:2px;" title="Cor Personalizada">
-                            </div>
-                        </div>
-
-                        <div class="row g-3 mb-4">
-                            <div class="col-6">
-                                <label class="form-label small">Arredondamento (Radius)</label>
-                                <select id="cfgRadius" class="form-select form-select-sm">
-                                    <option value="0px">Quadrado (0px)</option>
-                                    <option value="6px">Suave (6px)</option>
-                                    <option value="12px">Moderno (12px)</option>
-                                    <option value="20px">Redondo (20px)</option>
-                                </select>
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label small">Profundidade (Sombra)</label>
-                                <select id="cfgShadow" class="form-select form-select-sm">
-                                    <option value="none">Flat (Sem sombra)</option>
-                                    <option value="0 2px 4px rgba(0,0,0,0.05)">Sutil</option>
-                                    <option value="0 4px 12px rgba(0,0,0,0.08)">Padrão</option>
-                                    <option value="0 10px 25px rgba(0,0,0,0.15)">Intenso</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">🎨 Cores da Agenda</h6>
-                        <div class="card p-3 bg-white border-0 shadow-sm">
-                            <div class="row g-2 align-items-end mb-3">
-                                <div class="col-6">
-                                    <label class="small text-muted mb-1">Tipo de Sessão</label>
-                                    <select class="form-select form-select-sm" id="cfgLegendTypeSelect"></select>
-                                </div>
-                                <div class="col-2">
-                                    <label class="small text-muted mb-1">Cor</label>
-                                    <input type="color" class="form-control form-control-color w-100 p-1" id="cfgLegendColorInput" value="#2f5d3f" title="Escolher cor">
-                                </div>
-                                <div class="col-4">
-                                    <button class="btn btn-sm btn-success w-100" type="button" onclick="adicionarCorLegenda()">
-                                        <i class="fas fa-plus me-1"></i> Adicionar
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <label class="small fw-bold text-muted mb-2">Cores Configuradas:</label>
-                            <div id="containerCoresLegenda" class="d-flex flex-wrap gap-2 p-2 bg-light rounded border" style="min-height: 50px;">
-                                </div>
-                        </div>
-
-                    </div>
-
-                    <div id="tab-config-menu" style="display:none;">
-                        <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">Visibilidade dos Módulos</h6>
-                        <p class="small text-muted">Marque os módulos que devem aparecer na barra de navegação global. (Usuários individuais podem ter restrições adicionais).</p>
-                        <div id="listaConfigModules" class="list-group shadow-sm"></div>
-                    </div>
-
-                    <div id="tab-config-usuarios" style="display:none;">
-                        <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">Controle de Acesso</h6>
-                        
-                        <div class="card p-3 mb-4 border-0 shadow-sm bg-white">
-                            <h6 class="small fw-bold text-primary mb-3"><i class="fas fa-user-plus me-1"></i> Adicionar Usuário</h6>
-                            
-                            <div class="row g-2 mb-3">
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control form-control-sm" id="novoUserLogin" placeholder="Login">
-                                        <label>Login de Acesso</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control form-control-sm" id="novoUserPass" placeholder="Senha">
-                                        <label>Senha</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="small fw-bold d-block mb-1">Validade do Acesso</label>
-                                <select class="form-select form-select-sm" id="novoUserValidity">
-                                    <option value="permanent">♾️ Permanente (Administrador/Fixo)</option>
-                                    <option value="1_hour">⏳ 1 Hora (Demonstração)</option>
-                                    <option value="24_hours">📅 24 Horas (Temporário)</option>
-                                    <option value="7_days">🗓️ 7 Dias (Temporário)</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="small fw-bold d-block mb-2">Permissões de Módulo</label>
-                                <div class="bg-light p-2 rounded border" id="containerPermissoesUser" style="max-height: 150px; overflow-y: auto;">
-                                    </div>
-                                <div class="form-text small mt-1">Desmarque para restringir o acesso deste usuário a módulos específicos.</div>
-                            </div>
-
-                            <button class="btn btn-success w-100" onclick="adicionarUsuarioAvancado()">Criar Usuário</button>
-                        </div>
-
-                        <h6 class="small fw-bold text-muted">Usuários Cadastrados</h6>
-                        <ul class="list-group small" id="listaUsuariosConfig"></ul>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer bg-light d-flex justify-content-between">
-          <button type="button" class="btn btn-outline-danger btn-sm" onclick="logout()">Sair do Sistema</button>
-          <div>
-            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-primary btn-sm" onclick="salvarConfiguracoesGerais()">Salvar Tudo</button>
-          </div>
-        </div>
-      </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modalTransacao" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header bg-success text-white">
-          <h5 class="modal-title fs-6">💰 Lançamento Manual</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-            <input type="hidden" id="transacaoId">
-            <div class="mb-2">
-                <label class="form-label small">Tipo</label>
-                <select class="form-select" id="transacaoTipo" onchange="atualizarSelectCategorias()">
-                    <option value="saida">🔴 Despesa (Saída)</option>
-                    <option value="entrada">🟢 Receita (Entrada)</option>
-                </select>
-            </div>
-            <div class="mb-2">
-                <label class="form-label small">Categoria</label>
-                <select class="form-select" id="transacaoCategoria"></select>
-            </div>
-            <div class="mb-2">
-                <label class="form-label small">Descrição</label>
-                <input type="text" class="form-control" id="transacaoDescricao" placeholder="Ex: Compra de Cartão SD">
-            </div>
-            <div class="row g-2">
-                <div class="col-6">
-                    <label class="form-label small">Data</label>
-                    <input type="date" class="form-control" id="transacaoData">
-                </div>
-                <div class="col-6">
-                    <label class="form-label small">Valor (R$)</label>
-                    <input type="number" step="0.01" class="form-control" id="transacaoValor">
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-success btn-sm" onclick="salvarTransacao()">Salvar Lançamento</button>
-        </div>
-      </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modalEditorTipos" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fs-6">✏️ Gerenciar Tipos de Sessão</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="input-group mb-3">
-                    <input type="text" id="novoTipoSessaoInput" class="form-control" placeholder="Novo tipo (Ex: Ensaio Natal)">
-                    <button class="btn btn-success" type="button" onclick="salvarNovoTipoSessao()">Adicionar</button>
-                </div>
-                <h6 class="small text-muted mb-2">Tipos Atuais:</h6>
-                <ul class="list-group small" id="listaTiposSessaoGerenciar" style="max-height: 300px; overflow-y: auto;">
-                    </ul>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
 /**
  * ====================================================================
- * SISTEMA CENTRALIZADO CRM RCF v8.4
+ * SISTEMA CENTRALIZADO CRM RCF v4.0 (Builder Edition)
  * ====================================================================
  */
 
@@ -1007,584 +463,269 @@
 function getDados(chave) { return JSON.parse(localStorage.getItem(chave)) || []; }
 function setDados(chave, dados) { localStorage.setItem(chave, JSON.stringify(dados)); }
 
-// --- CONFIGURAÇÃO PADRÃO ---
-const DEFAULT_CONFIG = {
-    appName: "RC CRM",
-    primaryColor: "#2f5d3f",
-    font: "'Segoe UI', sans-serif",
-    radius: "12px",
-    shadow: "0 4px 12px rgba(0,0,0,0.08)"
-};
+// Estrutura de Módulos Personalizados
+// custom_modules = [{ id: 'mod_123', nome: 'Fornecedores', icone: 'truck', campos: [...] }]
+// custom_data_mod_123 = [{ id: 1, campo_a: 'valor', ... }]
 
-// --- CONFIGURAÇÃO PADRÃO DE CORES DA LEGENDA (Fallback) ---
-const DEFAULT_LEGEND_COLORS = {
-    'Aniversário': '#0d6efd',
-    'Ensaio Infantil': '#198754',
-    'Ensaio Gestante': '#6f42c1',
-    'Smash The Cake': '#fd7e14'
-};
-
-// --- TIPOS DE SESSÃO PADRÃO ---
-const DEFAULT_SESSION_TYPES = [
-    "Aniversário",
-    "Ensaio Infantil",
-    "Debutante",
-    "Ensaio Gestante",
-    "Ensaio Casual",
-    "Ensaio Família",
-    "Smash The Cake"
-];
-
-// --- CONFIGURAÇÃO DOS MÓDULOS ---
-const CORE_MODULES = [
-    { id: 'tela-inicio', nome: 'Início', icon: 'home', default: true },
-    { id: 'tela-clientes', nome: 'Clientes', icon: 'user', default: true },
-    { id: 'tela-agenda', nome: 'Agenda', icon: 'calendar-alt', default: true },
-    { id: 'tela-albuns', nome: 'Álbuns', icon: 'book-open', default: true },
-    { id: 'tela-financeiro', nome: 'Financeiro', icon: 'chart-pie', default: true },
-    { id: 'tela-ferramentas', nome: 'Builder', icon: 'cogs', default: true },
-    { id: 'tela-extra1', nome: 'Msgs', icon: 'envelope', default: true }
-];
-
+// --- NAVEGAÇÃO ---
 let moduloAtualId = null;
+
+function mostrarTela(id, btn) {
+    // Esconde todas as telas fixas
+    document.querySelectorAll("main > div").forEach(t => t.style.display = 'none');
+    // Mostra a selecionada
+    const tela = document.getElementById(id);
+    if(tela) tela.style.display = 'block';
+
+    // Atualiza Botões
+    if(btn) {
+        document.querySelectorAll('.navbtn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    // Lógica Específica
+    if(id === 'tela-inicio') { renderizarCalendario(); listarProximos(); }
+    if(id === 'tela-clientes') listarClientes();
+    if(id === 'tela-agenda') carregarClientesSelect();
+    if(id === 'tela-albuns') { carregarClientesSelect(); listarAlbuns(); }
+    if(id === 'tela-financeiro') exibirDashboardFinanceiro();
+    if(id === 'tela-ferramentas') carregarListaModulosBuilder();
+}
 
 // Inicialização
 window.onload = function() {
-    aplicarTemaGlobal();
-    inicializarTiposSessao(); // Inicializa ou carrega tipos
-    verificarLogin(); // Verifica sessão antes de carregar o resto
+    renderizarNavegacaoExtra(); // Carrega as abas personalizadas
+    mostrarTela('tela-inicio');
 };
 
-// --- SISTEMA DE LOGIN & SESSÃO ---
-function verificarLogin() {
-    const sessionUser = JSON.parse(sessionStorage.getItem('rc_user_session_obj'));
+/* =================================================================================
+   MÓDULO BUILDER (FERRAMENTAS) - CRIAÇÃO DE TELAS
+   ================================================================================= */
+let camposTemporariosBuilder = [];
+
+function switchBuilderTab(tab) {
+    document.getElementById('builder-gerenciar').style.display = tab === 'gerenciar' ? 'block' : 'none';
+    document.getElementById('builder-criar').style.display = tab === 'criar' ? 'block' : 'none';
     
-    if(sessionUser) {
-        if(sessionUser.expireTime && Date.now() > sessionUser.expireTime) {
-            alert("O tempo de sessão deste usuário expirou.");
-            logout();
-            return;
-        }
-        document.getElementById('login-screen').style.display = 'none';
-        iniciarSistema();
-    } else {
-        document.getElementById('login-screen').style.display = 'flex';
-    }
+    // Toggle active class bootstrap
+    document.querySelectorAll('#builderTab .nav-link').forEach(l => l.classList.remove('active'));
+    event.target.classList.add('active');
+
+    if(tab === 'criar') iniciarNovoModulo();
+    else carregarListaModulosBuilder();
 }
 
-function doLogin() {
-    const user = document.getElementById('loginUser').value;
-    const pass = document.getElementById('loginPass').value;
-    
-    let users = getDados('system_users');
-    if(!users || users.length === 0) {
-        users = [{user: 'admin', pass: '1234', permissions: 'all', validity: 'permanent'}];
-        setDados('system_users', users);
-    }
-
-    const found = users.find(u => u.user === user && u.pass === pass);
-
-    if(found) {
-        let expireTimestamp = null;
-        if(found.validity && found.validity !== 'permanent') {
-            const now = Date.now();
-            if(found.validity === '1_hour') expireTimestamp = now + (60 * 60 * 1000);
-            if(found.validity === '24_hours') expireTimestamp = now + (24 * 60 * 60 * 1000);
-            if(found.validity === '7_days') expireTimestamp = now + (7 * 24 * 60 * 60 * 1000);
-        }
-
-        const sessionObj = {
-            user: found.user,
-            permissions: found.permissions || 'all', 
-            expireTime: expireTimestamp
-        };
-
-        sessionStorage.setItem('rc_user_session', found.user);
-        sessionStorage.setItem('rc_user_session_obj', JSON.stringify(sessionObj));
-
-        document.getElementById('login-screen').style.display = 'none';
-        iniciarSistema();
-    } else {
-        alert("Usuário ou senha incorretos!");
-    }
+function iniciarNovoModulo() {
+    document.getElementById('builderNomeModulo').value = '';
+    document.getElementById('builderIconeModulo').value = '';
+    document.getElementById('builderAreaCampos').innerHTML = '<p class="text-center text-muted small my-3">Nenhum campo adicionado. Use os botões abaixo.</p>';
+    camposTemporariosBuilder = [];
 }
 
-function logout() {
-    sessionStorage.removeItem('rc_user_session');
-    sessionStorage.removeItem('rc_user_session_obj');
-    location.reload();
-}
+function carregarListaModulosBuilder() {
+    const lista = document.getElementById('listaModulosCriados');
+    const modulos = getDados('custom_modules');
+    lista.innerHTML = '';
 
-function iniciarSistema() {
-    limparDadosFantasmas();
-    renderizarNavegacao();
-    inicializarTemplatesPadrao(); 
-    
-    const visibilidade = getDados('menu_visibility') || {};
-    const sessionUser = JSON.parse(sessionStorage.getItem('rc_user_session_obj'));
-    const userPerms = sessionUser ? sessionUser.permissions : 'all';
-
-    let primeiraAba = CORE_MODULES.find(m => {
-        const isVisibleGlobal = visibilidade[m.id] !== false;
-        const isPermittedUser = userPerms === 'all' || userPerms.includes(m.id);
-        return isVisibleGlobal && isPermittedUser;
-    });
-    
-    if(primeiraAba) {
-        mostrarTela(primeiraAba.id, document.querySelector(`a[data-target="${primeiraAba.id}"]`));
-    } else {
-        const custom = getDados('custom_modules') || [];
-        if(custom.length > 0) {
-             mostrarTelaDinamica(custom[0].id, null);
-        } else {
-             document.querySelectorAll(".module-screen").forEach(t => t.style.display = 'none');
-             alert("Seu usuário não tem permissão para acessar nenhum módulo.");
-        }
-    }
-}
-
-// --- SISTEMA DE CONFIGURAÇÃO GLOBAL ---
-function aplicarTemaGlobal() {
-    const cfg = getDados('system_config') || DEFAULT_CONFIG;
-    document.documentElement.style.setProperty('--primary-color', cfg.primaryColor);
-    document.documentElement.style.setProperty('--sys-font', cfg.font);
-    
-    const radius = cfg.radius || '12px';
-    const shadow = cfg.shadow || '0 4px 12px rgba(0,0,0,0.08)';
-    document.documentElement.style.setProperty('--sys-radius', radius);
-    document.documentElement.style.setProperty('--sys-shadow', shadow);
-    
-    document.getElementById('header-title').innerText = cfg.appName;
-    document.getElementById('login-brand').innerText = cfg.appName;
-    document.title = cfg.appName;
-}
-
-function abrirConfiguracaoGeral() {
-    const cfg = getDados('system_config') || DEFAULT_CONFIG;
-    
-    document.getElementById('cfgAppName').value = cfg.appName;
-    document.getElementById('cfgAppColor').value = cfg.primaryColor;
-    document.getElementById('cfgAppFont').value = cfg.font;
-    document.getElementById('cfgRadius').value = cfg.radius || '12px';
-    document.getElementById('cfgShadow').value = cfg.shadow || '0 4px 12px rgba(0,0,0,0.08)';
-
-    // Preencher Select de Tipos para Legenda com os dados mais recentes
-    const selectLegend = document.getElementById('cfgLegendTypeSelect');
-    let sessionTypes = getDados('session_types');
-    
-    // Se estiver vazio, usa o padrão (garante que o select não fique vazio)
-    if (!sessionTypes || sessionTypes.length === 0) {
-        sessionTypes = DEFAULT_SESSION_TYPES;
-    }
-    
-    selectLegend.innerHTML = '<option value="">Selecione...</option>';
-    sessionTypes.sort().forEach(t => {
-        selectLegend.innerHTML += `<option value="${t}">${t}</option>`;
-    });
-
-    // Renderizar Lista de Cores Configuradas
-    renderizarEditorCores();
-
-    listarUsuariosConfig();
-    renderizarCheckboxesPermissaoNovoUsuario(); 
-    renderizarListaMenuConfig();
-
-    const sessionUser = JSON.parse(sessionStorage.getItem('rc_user_session_obj'));
-    const userPerms = sessionUser ? sessionUser.permissions : 'all';
-    const linkTabUsers = document.querySelector('a[onclick="switchConfigTab(\'usuarios\')"]');
-
-    if(userPerms === 'all' || (Array.isArray(userPerms) && userPerms.includes('sys_users_manager'))) {
-        if(linkTabUsers) linkTabUsers.style.display = 'block';
-    } else {
-        if(linkTabUsers) linkTabUsers.style.display = 'none';
-        if(document.getElementById('tab-config-usuarios').style.display === 'block') {
-            switchConfigTab('aparencia');
-        }
-    }
-
-    new bootstrap.Modal(document.getElementById('modalConfigGlobal')).show();
-}
-
-function renderizarEditorCores() {
-    const container = document.getElementById('containerCoresLegenda');
-    const colors = getDados('system_legend_colors') || DEFAULT_LEGEND_COLORS;
-    container.innerHTML = '';
-    
-    const keys = Object.keys(colors);
-    if(keys.length === 0) {
-        container.innerHTML = '<span class="text-muted small w-100 text-center py-2">Nenhuma cor configurada. Adicione acima.</span>';
+    if(modulos.length === 0) {
+        lista.innerHTML = '<div class="alert alert-warning small">Nenhuma aba personalizada criada. Clique em "+ Nova Aba".</div>';
         return;
     }
 
-    for (const [tipo, cor] of Object.entries(colors)) {
-        // Gera o chip/tag visual
-        container.innerHTML += `
-            <div class="legend-chip">
-                <div class="legend-chip-dot" style="background-color:${cor};"></div>
-                <span>${tipo}</span>
-                <span class="legend-chip-remove" onclick="removerCorLegenda('${tipo}')" title="Remover cor">
-                    <i class="fas fa-times-circle"></i>
-                </span>
-            </div>
-        `;
-    }
-}
-
-function adicionarCorLegenda() {
-    const tipo = document.getElementById('cfgLegendTypeSelect').value;
-    const cor = document.getElementById('cfgLegendColorInput').value;
-    
-    if(!tipo) return alert("Por favor, selecione um tipo de sessão na lista.");
-    
-    let colors = getDados('system_legend_colors') || {};
-    
-    // Se não existir o objeto no storage, inicia com o padrão
-    if(Object.keys(colors).length === 0) colors = DEFAULT_LEGEND_COLORS;
-
-    colors[tipo] = cor;
-    
-    setDados('system_legend_colors', colors);
-    renderizarEditorCores();
-}
-
-function removerCorLegenda(tipo) {
-    if(confirm("Remover regra de cor para '" + tipo + "'?")) {
-        let colors = getDados('system_legend_colors') || DEFAULT_LEGEND_COLORS;
-        delete colors[tipo];
-        setDados('system_legend_colors', colors);
-        renderizarEditorCores();
-    }
-}
-
-function pickColor(color) {
-    document.getElementById('cfgAppColor').value = color;
-}
-
-function switchConfigTab(tab) {
-    document.getElementById('tab-config-aparencia').style.display = tab === 'aparencia' ? 'block' : 'none';
-    document.getElementById('tab-config-menu').style.display = tab === 'menu' ? 'block' : 'none';
-    document.getElementById('tab-config-usuarios').style.display = tab === 'usuarios' ? 'block' : 'none';
-    
-    document.querySelectorAll('#configTabs .nav-link').forEach(l => l.classList.remove('active'));
-    event.target.classList.add('active');
-}
-
-function salvarConfiguracoesGerais() {
-    // Salvar Aparência
-    const appName = document.getElementById('cfgAppName').value || "RC CRM";
-    const appColor = document.getElementById('cfgAppColor').value || "#2f5d3f";
-    const appFont = document.getElementById('cfgAppFont').value;
-    const radius = document.getElementById('cfgRadius').value;
-    const shadow = document.getElementById('cfgShadow').value;
-    
-    setDados('system_config', {
-        appName: appName,
-        primaryColor: appColor,
-        font: appFont,
-        radius: radius,
-        shadow: shadow
-    });
-
-    // Salvar Menu (Visibilidade)
-    const checks = document.querySelectorAll('#listaConfigModules input[type="checkbox"]');
-    let visibilidade = {};
-    checks.forEach(chk => { visibilidade[chk.value] = chk.checked; });
-    setDados('menu_visibility', visibilidade);
-
-    aplicarTemaGlobal();
-    renderizarNavegacao();
-    // Atualizar calendário se estiver na tela
-    if(document.getElementById('tela-inicio').style.display === 'block') {
-        renderizarCalendario();
-    }
-
-    bootstrap.Modal.getInstance(document.getElementById('modalConfigGlobal')).hide();
-    const currentTab = document.querySelector('nav a.active');
-    if(!currentTab) { location.reload(); }
-}
-
-// --- GERENCIAMENTO DE TIPOS DE SESSÃO ---
-function inicializarTiposSessao() {
-    let tipos = getDados('session_types');
-    if (!tipos || tipos.length === 0) {
-        setDados('session_types', DEFAULT_SESSION_TYPES);
-    }
-}
-
-function carregarTiposSessaoSelect() {
-    const select = document.getElementById('tipoSessao');
-    const tipos = getDados('session_types').sort();
-    const valorAtual = select.value;
-
-    select.innerHTML = '<option value="">Selecione...</option>';
-    tipos.forEach(t => {
-        const opt = document.createElement('option');
-        opt.value = t;
-        opt.textContent = t;
-        select.appendChild(opt);
-    });
-
-    if(valorAtual && tipos.includes(valorAtual)) {
-        select.value = valorAtual;
-    }
-}
-
-function abrirModalTiposSessao() {
-    carregarListaGerenciamentoTipos();
-    new bootstrap.Modal(document.getElementById('modalEditorTipos')).show();
-}
-
-function carregarListaGerenciamentoTipos() {
-    const lista = document.getElementById('listaTiposSessaoGerenciar');
-    const tipos = getDados('session_types').sort();
-    lista.innerHTML = '';
-    tipos.forEach((t, idx) => {
-        lista.innerHTML += `
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>${t}</span>
-                <button class="btn btn-sm btn-outline-danger" onclick="excluirTipoSessao(${idx})"><i class="fas fa-trash"></i></button>
-            </li>
-        `;
-    });
-}
-
-function salvarNovoTipoSessao() {
-    const input = document.getElementById('novoTipoSessaoInput');
-    const val = input.value.trim();
-    if(!val) return;
-    
-    let tipos = getDados('session_types');
-    if(tipos.includes(val)) return alert("Tipo já existe.");
-    
-    tipos.push(val);
-    setDados('session_types', tipos);
-    input.value = '';
-    carregarListaGerenciamentoTipos();
-    carregarTiposSessaoSelect(); // Atualiza o select na tela de fundo
-}
-
-function excluirTipoSessao(idx) {
-    if(confirm("Excluir este tipo de sessão?")) {
-        let tipos = getDados('session_types').sort();
-        const removido = tipos[idx];
-        tipos.splice(idx, 1);
-        setDados('session_types', tipos);
-        
-        // Também remove a cor associada se houver
-        let colors = getDados('system_legend_colors');
-        if(colors && colors[removido]) {
-            delete colors[removido];
-            setDados('system_legend_colors', colors);
-        }
-
-        carregarListaGerenciamentoTipos();
-        carregarTiposSessaoSelect();
-    }
-}
-
-// --- CONFIG USUÁRIOS AVANÇADA ---
-function listarUsuariosConfig() {
-    const list = document.getElementById('listaUsuariosConfig');
-    list.innerHTML = '';
-    const users = getDados('system_users') || [{user: 'admin', pass: '1234', permissions: 'all'}];
-    
-    users.forEach((u, index) => {
-        let permLabel = '<span class="badge bg-success">Admin Total</span>';
-        if(u.permissions !== 'all' && Array.isArray(u.permissions)) {
-            const count = u.permissions.filter(p => p !== 'sys_users_manager').length;
-            const hasUserManager = u.permissions.includes('sys_users_manager');
-            permLabel = `<span class="badge bg-secondary">${count} módulos</span>`;
-            if(hasUserManager) permLabel += ' <span class="badge bg-warning text-dark">Gestor Users</span>';
-        }
-        
-        let validadeLabel = '';
-        if(u.validity && u.validity !== 'permanent') {
-            validadeLabel = `<br><small class="text-warning"><i class="fas fa-clock"></i> ${u.validity.replace('_', ' ')}</small>`;
-        }
-
-        list.innerHTML += `
-        <li class="list-group-item d-flex justify-content-between align-items-center">
+    modulos.forEach(mod => {
+        const item = document.createElement('div');
+        item.className = 'list-group-item d-flex justify-content-between align-items-center';
+        item.innerHTML = `
             <div>
-                <span class="fw-bold"><i class="fas fa-user me-2"></i> ${u.user}</span>
-                <div class="small text-muted mt-1">${permLabel} ${validadeLabel}</div>
+                <i class="fas fa-${mod.icone} me-2 text-success"></i> <strong>${mod.nome}</strong>
+                <br><small class="text-muted">${mod.campos.length} campos configurados</small>
             </div>
-            ${users.length > 1 ? `<button class="btn btn-sm btn-outline-danger" onclick="removerUsuario(${index})"><i class="fas fa-trash"></i></button>` : '<small class="text-muted">(Principal)</small>'}
-        </li>`;
+            <button class="btn btn-sm btn-outline-danger" onclick="excluirModulo('${mod.id}')"><i class="fas fa-trash"></i></button>
+        `;
+        lista.appendChild(item);
     });
 }
 
-function renderizarCheckboxesPermissaoNovoUsuario() {
-    const container = document.getElementById('containerPermissoesUser');
-    container.innerHTML = '';
+// Adiciona um campo visualmente no Builder
+function addBuilderField(type) {
+    // Remove msg vazia se existir
+    const area = document.getElementById('builderAreaCampos');
+    if(area.querySelector('p')) area.innerHTML = '';
+
+    const idTemp = 'field_' + Date.now();
+    const div = document.createElement('div');
+    div.className = 'field-config-card';
+    div.id = `card_${idTemp}`;
     
-    // Módulos Core
-    CORE_MODULES.forEach(mod => {
-        container.innerHTML += `
-        <div class="form-check form-switch">
-            <input class="form-check-input check-perm-user" type="checkbox" value="${mod.id}" id="perm_user_${mod.id}" checked>
-            <label class="form-check-label small" for="perm_user_${mod.id}">${mod.nome}</label>
-        </div>`;
-    });
+    let htmlExtra = '';
     
-    // Módulos Custom
-    const custom = getDados('custom_modules') || [];
-    if(custom.length > 0) {
-        container.innerHTML += `<div class="border-top my-2"></div><small class="text-muted d-block mb-1">Personalizados</small>`;
-        custom.forEach(mod => {
-            container.innerHTML += `
-            <div class="form-check form-switch">
-                <input class="form-check-input check-perm-user" type="checkbox" value="${mod.id}" id="perm_user_${mod.id}" checked>
-                <label class="form-check-label small" for="perm_user_${mod.id}">${mod.nome}</label>
-            </div>`;
-        });
+    // Configurações Específicas por Tipo
+    if(type === 'select' || type === 'multiselect') {
+        htmlExtra = `
+            <div class="mt-2">
+                <label class="small text-muted">Opções (separadas por vírgula)</label>
+                <input type="text" class="form-control form-control-sm field-options" placeholder="Ex: Pendente, Pago, Cancelado">
+            </div>
+        `;
+    }
+    
+    if(type === 'money') {
+        htmlExtra = `
+            <div class="mt-2 form-check">
+                <input class="form-check-input field-finance" type="checkbox" id="chk_${idTemp}">
+                <label class="form-check-label small" for="chk_${idTemp}">Lançar no Financeiro?</label>
+            </div>
+            <div class="mt-1" id="fin_type_${idTemp}" style="display:none;">
+                <select class="form-select form-select-sm field-finance-type">
+                    <option value="despesa">Como Despesa (Saída)</option>
+                    <option value="receita">Como Receita (Entrada)</option>
+                </select>
+            </div>
+        `;
     }
 
-    // Permissão Especial de Sistema
-    container.innerHTML += `
-    <div class="border-top my-2"></div>
-    <div class="form-check form-switch">
-        <input class="form-check-input check-perm-user" type="checkbox" value="sys_users_manager" id="perm_user_sys_users" checked>
-        <label class="form-check-label small fw-bold text-danger" for="perm_user_sys_users">⚙️ Acesso: Gerenciar Usuários</label>
-    </div>`;
-}
-
-function adicionarUsuarioAvancado() {
-    const user = document.getElementById('novoUserLogin').value.trim();
-    const pass = document.getElementById('novoUserPass').value.trim();
-    const validity = document.getElementById('novoUserValidity').value;
-    
-    if(!user || !pass) return alert("Preencha login e senha.");
-    
-    let users = getDados('system_users') || [];
-    if(users.some(u => u.user === user)) return alert("Usuário já existe.");
-    
-    const checkboxes = document.querySelectorAll('.check-perm-user');
-    let permissions = [];
-    let allChecked = true;
-    
-    checkboxes.forEach(chk => {
-        if(chk.checked) permissions.push(chk.value);
-        else allChecked = false;
-    });
-    
-    const finalPerms = allChecked ? 'all' : permissions;
-
-    users.push({
-        user: user, 
-        pass: pass,
-        permissions: finalPerms,
-        validity: validity
-    });
-    
-    setDados('system_users', users);
-    document.getElementById('novoUserLogin').value = '';
-    document.getElementById('novoUserPass').value = '';
-    renderizarCheckboxesPermissaoNovoUsuario(); // Reset
-    listarUsuariosConfig();
-}
-
-function removerUsuario(idx) {
-    if(confirm("Remover usuário?")) {
-        let users = getDados('system_users');
-        users.splice(idx, 1);
-        setDados('system_users', users);
-        listarUsuariosConfig();
+    if(type === 'formula') {
+        htmlExtra = `
+            <div class="mt-2 bg-light p-2 border rounded">
+                <label class="small fw-bold">Fórmula Matemática</label>
+                <input type="text" class="form-control form-control-sm field-formula" placeholder="Ex: val_unitario * quantidade">
+                <small class="text-muted d-block mt-1" style="font-size:0.7rem">
+                    Use os nomes das variáveis (definidos acima) para calcular. Ex: Se você criou um campo com nome de variável "custo" e outro "qtd", digite: <code>custo * qtd</code>.
+                </small>
+            </div>
+        `;
     }
-}
 
-// --- CONFIG MENU (INTEGRADO) ---
-function renderizarListaMenuConfig() {
-    const modalList = document.getElementById('listaConfigModules');
-    modalList.innerHTML = '';
-    const visibilidade = getDados('menu_visibility') || {};
-    const customModules = getDados('custom_modules') || [];
-    const createItem = (id, nome, icon) => {
-        const isChecked = visibilidade[id] !== false; 
-        return `<label class="list-group-item d-flex gap-3 align-items-center"><input class="form-check-input flex-shrink-0" type="checkbox" value="${id}" ${isChecked ? 'checked' : ''} style="font-size: 1.3em;"><span class="pt-1 form-checked-content"><i class="fas fa-${icon} text-muted me-2 w-25px"></i> <strong>${nome}</strong></span></label>`;
-    };
-    CORE_MODULES.forEach(mod => modalList.innerHTML += createItem(mod.id, mod.nome, mod.icon));
-    if(customModules.length > 0) {
-        modalList.innerHTML += `<div class="p-2 bg-light text-muted small fw-bold">Módulos Personalizados</div>`;
-        customModules.forEach(mod => modalList.innerHTML += createItem(mod.id, mod.nome, mod.icone));
+    div.innerHTML = `
+        <button class="btn-delete-field" onclick="removeBuilderField('${idTemp}')"><i class="fas fa-times"></i></button>
+        <div class="row g-2">
+            <div class="col-8">
+                <label class="small fw-bold">Rótulo (Label)</label>
+                <input type="text" class="form-control form-control-sm field-label" placeholder="Ex: Valor Unitário">
+            </div>
+            <div class="col-4">
+                <label class="small fw-bold">Tipo</label>
+                <input type="text" class="form-control form-control-sm bg-light" value="${type}" disabled>
+                <input type="hidden" class="field-type" value="${type}">
+            </div>
+            <div class="col-12">
+                <label class="small text-muted">Nome Variável (sem espaços)</label>
+                <input type="text" class="form-control form-control-sm field-var" placeholder="Ex: val_unitario">
+            </div>
+        </div>
+        ${htmlExtra}
+    `;
+
+    area.appendChild(div);
+
+    // Listener para o Checkbox Financeiro
+    if(type === 'money') {
+        setTimeout(() => {
+            document.getElementById(`chk_${idTemp}`).addEventListener('change', function() {
+                document.getElementById(`fin_type_${idTemp}`).style.display = this.checked ? 'block' : 'none';
+            });
+        }, 100);
     }
 }
 
-function limparDadosFantasmas() {
-    let despesas = getDados('despesas');
-    const qtdAntes = despesas.length;
-    despesas = despesas.filter(d => {
-        if (d.data === '2026-01-13' && (!d.idAgendamento || d.idAgendamento === 'MOD_undefined')) return false; 
-        return true;
+function removeBuilderField(id) {
+    document.getElementById(`card_${id}`).remove();
+}
+
+function salvarNovoModulo() {
+    const nome = document.getElementById('builderNomeModulo').value.trim();
+    const icone = document.getElementById('builderIconeModulo').value.trim() || 'cube';
+    
+    if(!nome) return alert("Defina um nome para a aba.");
+
+    // Coletar Campos
+    const cards = document.querySelectorAll('.field-config-card');
+    const campos = [];
+
+    cards.forEach(card => {
+        const label = card.querySelector('.field-label').value;
+        const variable = card.querySelector('.field-var').value;
+        const type = card.querySelector('.field-type').value;
+        
+        if(!label || !variable) return; // Pula vazios
+
+        let config = { label, variable, type };
+
+        // Opções para Selects
+        if(card.querySelector('.field-options')) {
+            config.options = card.querySelector('.field-options').value.split(',').map(s => s.trim());
+        }
+
+        // Configuração Financeira
+        if(card.querySelector('.field-finance') && card.querySelector('.field-finance').checked) {
+            config.finance = true;
+            config.financeType = card.querySelector('.field-finance-type').value;
+        }
+
+        // Configuração Fórmula
+        if(card.querySelector('.field-formula')) {
+            config.formula = card.querySelector('.field-formula').value;
+        }
+
+        campos.push(config);
     });
-    if (despesas.length !== qtdAntes) setDados('despesas', despesas);
+
+    if(campos.length === 0) return alert("Adicione pelo menos um campo.");
+
+    const modulos = getDados('custom_modules');
+    const novoId = 'mod_' + Date.now();
+    
+    modulos.push({
+        id: novoId,
+        nome: nome,
+        icone: icone,
+        campos: campos
+    });
+
+    setDados('custom_modules', modulos);
+    
+    alert(`Módulo "${nome}" criado com sucesso! A página será recarregada para atualizar o menu.`);
+    location.reload(); 
+}
+
+function excluirModulo(id) {
+    if(confirm("Tem certeza? Todos os dados desta aba serão perdidos para sempre.")) {
+        let modulos = getDados('custom_modules');
+        modulos = modulos.filter(m => m.id !== id);
+        setDados('custom_modules', modulos);
+        localStorage.removeItem('custom_data_' + id); // Remove dados associados
+        location.reload();
+    }
 }
 
 /* =================================================================================
-   NAVEGAÇÃO COM PERMISSÕES
+   MOTOR DE RENDERIZAÇÃO DINÂMICA (GENÉRICO)
    ================================================================================= */
-function renderizarNavegacao() {
+
+function renderizarNavegacaoExtra() {
     const nav = document.getElementById('mainNav');
-    nav.innerHTML = '';
-    const customModules = getDados('custom_modules') || [];
-    const visibilidade = getDados('menu_visibility') || {};
+    const modulos = getDados('custom_modules');
     
-    const sessionUser = JSON.parse(sessionStorage.getItem('rc_user_session_obj'));
-    const userPerms = sessionUser ? sessionUser.permissions : 'all';
-
-    const checkPermission = (id) => {
-        if(userPerms === 'all') return true;
-        return Array.isArray(userPerms) && userPerms.includes(id);
-    };
-
-    CORE_MODULES.forEach(mod => {
-        const isVisibleGlobal = visibilidade[mod.id] !== false; 
-        if(isVisibleGlobal && checkPermission(mod.id)) {
-            criarBotaoNav(nav, mod.id, mod.nome, mod.icon, false);
-        }
-    });
-
-    customModules.forEach(mod => {
-        const isVisibleGlobal = visibilidade[mod.id] !== false; 
-        if(isVisibleGlobal && checkPermission(mod.id)) {
-            criarBotaoNav(nav, mod.id, mod.nome, mod.icone, true);
-        }
+    modulos.forEach(mod => {
+        const a = document.createElement('a');
+        a.className = 'navbtn';
+        a.href = '#';
+        a.innerHTML = `<i class="fas fa-${mod.icone}"></i><br/>${mod.nome}`;
+        a.onclick = function() {
+            carregarTelaDinamica(mod.id, this);
+        };
+        nav.appendChild(a);
     });
 }
 
-function criarBotaoNav(container, id, nome, icon, isCustom) {
-    const a = document.createElement('a');
-    a.href = '#';
-    a.dataset.target = id;
-    a.innerHTML = `<i class="fas fa-${icon}"></i> ${nome}`;
-    if(isCustom) a.onclick = function() { mostrarTelaDinamica(id, this); };
-    else a.onclick = function() { mostrarTela(id, this); };
-    container.appendChild(a);
-}
-
-function mostrarTela(id, btn) {
-    document.querySelectorAll(".module-screen").forEach(t => t.style.display = 'none');
-    document.querySelectorAll('nav a').forEach(b => b.classList.remove('active'));
-
-    const tela = document.getElementById(id);
-    if(tela) tela.style.display = 'block';
-    if(btn) btn.classList.add('active');
-
-    if(id === 'tela-inicio') { renderizarCalendario(); listarProximos(); }
-    if(id === 'tela-clientes') listarClientes();
-    if(id === 'tela-agenda') { carregarClientesSelect(); carregarTiposSessaoSelect(); }
-    if(id === 'tela-albuns') { carregarClientesSelect(); listarAlbuns(); }
-    if(id === 'tela-financeiro') inicializarFinanceiro();
-    if(id === 'tela-ferramentas') carregarListaModulosBuilder();
-    if(id === 'tela-extra1') carregarOpcoesModelos(); 
-}
-
-function mostrarTelaDinamica(modId, btn) {
-    document.querySelectorAll(".module-screen").forEach(t => t.style.display = 'none');
-    document.querySelectorAll('nav a').forEach(b => b.classList.remove('active'));
+function carregarTelaDinamica(modId, btnElement) {
+    // UI Change
+    document.querySelectorAll("main > div").forEach(t => t.style.display = 'none');
+    document.querySelectorAll('.navbtn').forEach(b => b.classList.remove('active'));
     
     const container = document.getElementById('tela-dinamica-container');
     container.style.display = 'block';
-    if(btn) btn.classList.add('active');
+    if(btnElement) btnElement.classList.add('active');
 
     moduloAtualId = modId;
     const modulos = getDados('custom_modules');
@@ -1593,885 +734,751 @@ function mostrarTelaDinamica(modId, btn) {
     if(!modConfig) return alert("Erro ao carregar módulo.");
 
     document.getElementById('titulo-dinamico').innerHTML = `<i class="fas fa-${modConfig.icone} me-2"></i> ${modConfig.nome}`;
+    
+    // Reset Form Display
     document.getElementById('form-dinamico-wrapper').style.display = 'none';
+    
+    // Renderizar Lista
     listarRegistrosDinamicos(modConfig);
+
+    // Preparar Formulário (mas manter escondido)
     construirFormularioDinamico(modConfig);
 }
 
-/* =================================================================================
-   FINANCEIRO INTEGRADO
-   ================================================================================= */
-const CATEGORIAS_FINANCEIRAS = {
-    entrada: ['Sessão Fotográfica', 'Venda de Álbum', 'Sinal/Reserva', 'Venda Produto', 'Serviço Extra', 'Outros'],
-    saida: ['Transporte/Uber', 'Alimentação', 'Equipamento', 'Marketing', 'Laboratório/Álbum', 'Assinaturas/Softwares', 'Outros']
-};
-
-function inicializarFinanceiro() {
-    const mesSelect = document.getElementById('filtroMesFin');
-    const anoSelect = document.getElementById('filtroAnoFin');
-    const anoAtual = new Date().getFullYear();
-    anoSelect.innerHTML = '';
-    for(let i=anoAtual-2; i<=anoAtual+2; i++) {
-        const opt = document.createElement('option');
-        opt.value = i; opt.text = i;
-        if(i === anoAtual) opt.selected = true;
-        anoSelect.appendChild(opt);
-    }
-    mesSelect.innerHTML = '';
-    const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-    meses.forEach((m, idx) => {
-        const opt = document.createElement('option');
-        opt.value = idx + 1; opt.text = m;
-        if(idx === new Date().getMonth()) opt.selected = true;
-        mesSelect.appendChild(opt);
-    });
-    atualizarDashboardFinanceiro();
-}
-
-function atualizarDashboardFinanceiro() {
-    const mes = parseInt(document.getElementById('filtroMesFin').value);
-    const ano = parseInt(document.getElementById('filtroAnoFin').value);
+function alternarFormularioDinamico() {
+    const form = document.getElementById('form-dinamico-wrapper');
+    const isVisible = form.style.display === 'block';
     
-    const agendamentos = getDados("agendamentos");
-    const despesas = getDados("despesas");
-    const avulsos = getDados("transacoes_avulsas") || []; 
-    const modulosPersonalizados = getDados("custom_modules") || []; 
-
-    let totalReceita = 0;
-    let totalDespesa = 0;
-    let lancamentos = [];
-
-    // 1. CORE: AGENDAMENTOS
-    agendamentos.forEach(a => {
-        if(!a.data) return;
-        const [aAno, aMes, aDia] = a.data.split('-').map(Number);
-        if(aMes === mes && aAno === ano) {
-            if(a.reserva > 0) {
-                totalReceita += a.reserva;
-                lancamentos.push({ id_origem: a.id, fonte: 'agenda', sub: 'sinal', tipo: 'entrada', data: a.data, desc: `${a.nome} (Sinal)`, cat: 'Sinal/Reserva', valor: a.reserva });
-            }
-            if(a.status === 'Finalizado' && a.valorDia > 0) {
-                totalReceita += a.valorDia;
-                lancamentos.push({ id_origem: a.id, fonte: 'agenda', sub: 'quitacao', tipo: 'entrada', data: a.data, desc: `${a.nome} (Quitação)`, cat: 'Sessão Fotográfica', valor: a.valorDia });
-            }
-        }
-    });
-
-    // 2. CORE: DESPESAS
-    despesas.forEach((d, index) => {
-        if(!d.data) return;
-        const [dAno, dMes, dDia] = d.data.split('-').map(Number);
-        if(dMes === mes && dAno === ano) {
-            let nomeRef = 'Despesa';
-            if(d.idAgendamento && !d.idAgendamento.toString().startsWith('MOD_')) {
-                const ag = agendamentos.find(a => a.id == d.idAgendamento);
-                if(ag) nomeRef = ag.nome;
-            }
-            if(d.uber > 0) { totalDespesa += d.uber; lancamentos.push({ id_origem: index, fonte: 'despesa_vinc', sub: 'uber', tipo: 'saida', data: d.data, desc: `Transp. (${nomeRef})`, cat: 'Transporte/Uber', valor: d.uber }); }
-            if(d.album > 0) { totalDespesa += d.album; lancamentos.push({ id_origem: index, fonte: 'despesa_vinc', sub: 'album', tipo: 'saida', data: d.data, desc: `Álbum (${nomeRef})`, cat: 'Laboratório/Álbum', valor: d.album }); }
-            if(d.outras > 0) { totalDespesa += d.outras; lancamentos.push({ id_origem: index, fonte: 'despesa_vinc', sub: 'outras', tipo: 'saida', data: d.data, desc: `Gerais (${nomeRef})`, cat: 'Outros', valor: d.outras }); }
-        }
-    });
-
-    // 3. CORE: AVULSOS
-    avulsos.forEach(t => {
-        if(!t.data) return;
-        const [tAno, tMes, tDia] = t.data.split('-').map(Number);
-        if(tMes === mes && tAno === ano) {
-            if(t.tipo === 'entrada') totalReceita += parseFloat(t.valor);
-            else totalDespesa += parseFloat(t.valor);
-            lancamentos.push({ id_origem: t.id, fonte: 'manual', tipo: t.tipo, data: t.data, desc: t.descricao, cat: t.categoria, valor: parseFloat(t.valor) });
-        }
-    });
-
-    // 4. INTEGRAÇÃO: MÓDULOS PERSONALIZADOS
-    modulosPersonalizados.forEach(mod => {
-        const registros = getDados('custom_data_' + mod.id);
-        const campoDesc = mod.campos.find(c => c.type === 'text');
-
-        registros.forEach(reg => {
-            if(reg.fin_snapshot && reg.fin_snapshot.tipo !== 'none') {
-                const fin = reg.fin_snapshot;
-                if(!fin.data) return;
-
-                const [fAno, fMes, fDia] = fin.data.split('-').map(Number);
-                if(fMes === mes && fAno === ano) {
-                    let descFinal = `${mod.nome} #${reg.id}`;
-                    if(campoDesc && reg[campoDesc.variable]) {
-                        descFinal = `${mod.nome}: ${reg[campoDesc.variable]}`;
-                    }
-
-                    if(fin.tipo === 'receita') {
-                        totalReceita += parseFloat(fin.valor);
-                        lancamentos.push({ id_origem: reg.id, fonte: 'custom_module', tipo: 'entrada', data: fin.data, desc: descFinal, cat: 'Receita Módulo', valor: parseFloat(fin.valor) });
-                    } else if (fin.tipo === 'despesa') {
-                        totalDespesa += parseFloat(fin.valor);
-                        lancamentos.push({ id_origem: reg.id, fonte: 'custom_module', tipo: 'saida', data: fin.data, desc: descFinal, cat: 'Despesa Módulo', valor: parseFloat(fin.valor) });
-                    }
-                }
-            }
-        });
-    });
-
-    // Renderizar
-    document.getElementById('finReceita').textContent = `R$ ${totalReceita.toFixed(2)}`;
-    document.getElementById('finDespesa').textContent = `R$ ${totalDespesa.toFixed(2)}`;
-    const saldo = totalReceita - totalDespesa;
-    const elSaldo = document.getElementById('finSaldo');
-    elSaldo.textContent = `R$ ${saldo.toFixed(2)}`;
-    elSaldo.className = 'fin-value ' + (saldo >= 0 ? 'text-white' : 'text-warning');
-
-    const tbody = document.getElementById('tabelaFinanceiraBody');
-    tbody.innerHTML = '';
-    lancamentos.sort((a,b) => a.data.localeCompare(b.data));
-
-    if(lancamentos.length === 0) {
-        document.getElementById('emptyStateFin').style.display = 'block';
-    } else {
-        document.getElementById('emptyStateFin').style.display = 'none';
-        lancamentos.forEach(l => {
-            const tr = document.createElement('tr');
-            const dataF = l.data.split('-').reverse().slice(0,2).join('/');
-            const colorClass = l.tipo === 'entrada' ? 'text-success' : 'text-danger';
-            const signal = l.tipo === 'entrada' ? '+' : '-';
-            
-            let acoes = '';
-            if(l.fonte === 'manual') {
-                acoes = `<button class="btn btn-outline-primary btn-action-fin" onclick="editarTransacao(${l.id_origem})"><i class="fas fa-pen"></i></button> <button class="btn btn-outline-danger btn-action-fin" onclick="excluirTransacao(${l.id_origem})"><i class="fas fa-trash"></i></button>`;
-            } else if (l.fonte === 'custom_module') {
-                acoes = `<span class="badge bg-light text-secondary border">Módulo</span>`; 
-            } else {
-                // Aqui tratamos agenda e despesas vinculadas
-                acoes = `<button class="btn btn-outline-danger btn-action-fin" onclick="excluirItemVinculado('${l.fonte}', ${l.id_origem}, '${l.sub}')"><i class="fas fa-trash"></i></button>`;
-            }
-
-            tr.innerHTML = `<td class="ps-3 fw-bold text-muted">${dataF}</td>
-                <td><div class="fw-bold" style="font-size:0.85rem">${l.desc}</div><span class="badge bg-light text-dark border" style="font-size:0.7rem">${l.cat}</span></td>
-                <td class="fw-bold ${colorClass}">${signal} R$ ${l.valor.toFixed(2)}</td>
-                <td class="text-end pe-3"><div class="d-flex gap-1 justify-content-end">${acoes}</div></td>`;
-            tbody.appendChild(tr);
-        });
+    if(!isVisible) {
+        // Limpar campos ao abrir
+        document.getElementById('form-dinamico').reset();
     }
-}
-
-function abrirModalTransacao() {
-    document.getElementById('transacaoId').value = '';
-    document.getElementById('transacaoDescricao').value = '';
-    document.getElementById('transacaoValor').value = '';
-    document.getElementById('transacaoData').value = new Date().toISOString().split('T')[0];
-    atualizarSelectCategorias();
-    new bootstrap.Modal(document.getElementById('modalTransacao')).show();
-}
-function atualizarSelectCategorias() {
-    const tipo = document.getElementById('transacaoTipo').value;
-    const select = document.getElementById('transacaoCategoria');
-    select.innerHTML = '';
-    CATEGORIAS_FINANCEIRAS[tipo].forEach(cat => {
-        const opt = document.createElement('option');
-        opt.value = cat; opt.textContent = cat; select.appendChild(opt);
-    });
-}
-function salvarTransacao() {
-    const id = document.getElementById('transacaoId').value;
-    const tipo = document.getElementById('transacaoTipo').value;
-    const categoria = document.getElementById('transacaoCategoria').value;
-    const desc = document.getElementById('transacaoDescricao').value;
-    const valor = parseFloat(document.getElementById('transacaoValor').value);
-    const data = document.getElementById('transacaoData').value;
-    if(!desc || !valor || !data) return alert("Preencha todos os campos.");
-    let transacoes = getDados('transacoes_avulsas') || [];
-    if(id) {
-        const idx = transacoes.findIndex(t => t.id == id);
-        if(idx > -1) transacoes[idx] = { id: parseInt(id), tipo, categoria, descricao: desc, valor, data };
-    } else {
-        transacoes.push({ id: Date.now(), tipo, categoria, descricao: desc, valor, data });
-    }
-    setDados('transacoes_avulsas', transacoes);
-    bootstrap.Modal.getInstance(document.getElementById('modalTransacao')).hide();
-    atualizarDashboardFinanceiro();
-}
-function editarTransacao(id) {
-    const transacoes = getDados('transacoes_avulsas');
-    const t = transacoes.find(x => x.id == id);
-    if(t) {
-        document.getElementById('transacaoId').value = t.id;
-        document.getElementById('transacaoTipo').value = t.tipo;
-        atualizarSelectCategorias();
-        document.getElementById('transacaoCategoria').value = t.categoria;
-        document.getElementById('transacaoDescricao').value = t.descricao;
-        document.getElementById('transacaoValor').value = t.valor;
-        document.getElementById('transacaoData').value = t.data;
-        new bootstrap.Modal(document.getElementById('modalTransacao')).show();
-    }
-}
-function excluirTransacao(id) {
-    if(confirm("Excluir este lançamento manual?")) {
-        let transacoes = getDados('transacoes_avulsas');
-        transacoes = transacoes.filter(t => t.id != id);
-        setDados('transacoes_avulsas', transacoes);
-        atualizarDashboardFinanceiro();
-    }
-}
-function excluirItemVinculado(fonte, id, subTipo) {
-    if(!confirm("Tem certeza? Isso pode afetar o registro do agendamento.")) return;
-    
-    // Tratamento para Despesas vinculadas (Uber, Album)
-    if(fonte === 'despesa_vinc') {
-        let despesas = getDados('despesas');
-        if(despesas[id]) { 
-            if(subTipo === 'uber') despesas[id].uber = 0;
-            if(subTipo === 'album') despesas[id].album = 0;
-            if(subTipo === 'outras') despesas[id].outras = 0;
-            if(despesas[id].uber === 0 && despesas[id].album === 0 && despesas[id].outras === 0) {
-                 despesas.splice(id, 1);
-            }
-            setDados('despesas', despesas);
-        }
-    }
-    
-    // Tratamento para Receitas da Agenda (Sinal, Quitação)
-    if(fonte === 'agenda') {
-        let ags = getDados("agendamentos");
-        const idx = ags.findIndex(a => a.id == id);
-        if(idx > -1) {
-            if(subTipo === 'sinal') ags[idx].reserva = 0;
-            if(subTipo === 'quitacao') {
-                ags[idx].valorDia = 0;
-            }
-            setDados("agendamentos", ags);
-        }
-    }
-
-    atualizarDashboardFinanceiro();
-}
-
-// BUILDER
-function switchBuilderTab(tab) {
-    document.getElementById('builder-gerenciar').style.display = tab === 'gerenciar' ? 'block' : 'none';
-    document.getElementById('builder-criar').style.display = tab === 'criar' ? 'block' : 'none';
-    document.querySelectorAll('#builderTab .nav-link').forEach(l => l.classList.remove('active'));
-    event.target.classList.add('active');
-    if(tab === 'criar') iniciarNovoModulo(); else carregarListaModulosBuilder();
-}
-function iniciarNovoModulo() {
-    document.getElementById('builderIdModulo').value = '';
-    document.getElementById('btnSalvarModulo').textContent = '💾 Salvar Aba';
-    document.getElementById('builderNomeModulo').value = '';
-    document.getElementById('builderIconeModulo').value = '';
-    document.getElementById('builderAreaCampos').innerHTML = '<p class="text-center text-muted small my-3">Nenhum campo adicionado.</p>';
-}
-function carregarListaModulosBuilder() {
-    const lista = document.getElementById('listaModulosCriados');
-    const modulos = getDados('custom_modules');
-    lista.innerHTML = '';
-    if(modulos.length === 0) return lista.innerHTML = '<div class="alert alert-warning small">Nenhuma aba personalizada criada.</div>';
-    modulos.forEach(mod => {
-        const item = document.createElement('div');
-        item.className = 'list-group-item d-flex justify-content-between align-items-center';
-        item.innerHTML = `<div><i class="fas fa-${mod.icone} me-2 text-success"></i> <strong>${mod.nome}</strong></div>
-            <div><button class="btn btn-sm btn-outline-primary me-1" onclick="editarModulo('${mod.id}')"><i class="fas fa-pen"></i></button><button class="btn btn-sm btn-outline-danger" onclick="excluirModulo('${mod.id}')"><i class="fas fa-trash"></i></button></div>`;
-        lista.appendChild(item);
-    });
-}
-function editarModulo(id) {
-    const modulos = getDados('custom_modules');
-    const mod = modulos.find(m => m.id === id);
-    if(!mod) return;
-    switchBuilderTab('criar');
-    document.getElementById('builderIdModulo').value = mod.id;
-    document.getElementById('builderNomeModulo').value = mod.nome;
-    document.getElementById('builderIconeModulo').value = mod.icone;
-    document.getElementById('btnSalvarModulo').textContent = '💾 Salvar Alterações';
-    document.getElementById('builderAreaCampos').innerHTML = '';
-    mod.campos.forEach(campo => { addBuilderField(campo.type, campo); });
-}
-function addBuilderField(type, existingData = null) {
-    const area = document.getElementById('builderAreaCampos');
-    if(area.querySelector('p')) area.innerHTML = '';
-    const idTemp = 'field_' + Date.now() + Math.random().toString(36).substr(2, 5);
-    const div = document.createElement('div'); div.className = 'field-config-card'; div.id = `card_${idTemp}`;
-    let valLabel = existingData ? existingData.label : '';
-    let valVar = existingData ? existingData.variable : '';
-    let readonlyVar = existingData ? 'readonly style="background-color:#e9ecef;"' : '';
-    let extra = '';
-    if(type === 'select' || type === 'multiselect') extra = `<input type="text" class="form-control form-control-sm field-options mt-2" placeholder="Opções separadas por vírgula" value="${existingData && existingData.options ? existingData.options.join(', ') : ''}">`;
-    if(type === 'formula') extra = `<input type="text" class="form-control form-control-sm field-formula mt-2" placeholder="Ex: val * qtd" value="${existingData && existingData.formula ? existingData.formula : ''}">`;
-    
-    let typeName = type;
-    if(type==='client_ref') typeName = 'Link Cliente';
-    if(type==='money') typeName = 'R$ Moeda (Fin)';
-    if(type==='date') typeName = 'Data (Fin)';
-
-    div.innerHTML = `<button class="btn-delete-field" onclick="removeBuilderField('${idTemp}')"><i class="fas fa-times"></i></button>
-        <div class="row g-2"><div class="col-8"><label class="small fw-bold">Rótulo</label><input type="text" class="form-control form-control-sm field-label" value="${valLabel}"></div>
-        <div class="col-4"><label class="small fw-bold">Tipo</label><input type="text" class="form-control form-control-sm bg-light" value="${typeName}" disabled><input type="hidden" class="field-type" value="${type}"></div>
-        <div class="col-12"><label class="small text-muted">Variável (ID do campo)</label><input type="text" class="form-control form-control-sm field-var" value="${valVar}" ${readonlyVar}></div></div>${extra}`;
-    area.appendChild(div);
-}
-function removeBuilderField(id) { document.getElementById(`card_${id}`).remove(); }
-function salvarNovoModulo() {
-    const nome = document.getElementById('builderNomeModulo').value.trim();
-    const icone = document.getElementById('builderIconeModulo').value.trim() || 'cube';
-    const idExistente = document.getElementById('builderIdModulo').value;
-    let financeType = 'none';
-
-    if(!nome) return alert("Nome obrigatório");
-    const campos = [];
-    document.querySelectorAll('.field-config-card').forEach(card => {
-        const label = card.querySelector('.field-label').value;
-        const variable = card.querySelector('.field-var').value;
-        const type = card.querySelector('.field-type').value;
-        if(label && variable) {
-            let config = { label, variable, type };
-            if(card.querySelector('.field-options')) config.options = card.querySelector('.field-options').value.split(',').map(s=>s.trim());
-            if(card.querySelector('.field-formula')) config.formula = card.querySelector('.field-formula').value;
-            campos.push(config);
-        }
-    });
-
-    let modulos = getDados('custom_modules');
-    if(idExistente) {
-        const idx = modulos.findIndex(m => m.id === idExistente);
-        if(idx > -1) { 
-            modulos[idx].nome = nome; 
-            modulos[idx].icone = icone; 
-            modulos[idx].campos = campos; 
-            modulos[idx].financeType = financeType;
-        }
-    } else {
-        const novoId = 'mod_' + Date.now();
-        modulos.push({ id: novoId, nome, icone, campos, financeType });
-        let vis = getDados('menu_visibility') || {}; vis[novoId] = true; setDados('menu_visibility', vis);
-    }
-    setDados('custom_modules', modulos); location.reload();
-}
-function excluirModulo(id) {
-    if(confirm("Excluir? Dados serão perdidos.")) {
-        let modulos = getDados('custom_modules'); modulos = modulos.filter(m => m.id !== id);
-        setDados('custom_modules', modulos); localStorage.removeItem('custom_data_' + id); location.reload();
-    }
-}
-function cancelarEdicaoModulo() { iniciarNovoModulo(); switchBuilderTab('gerenciar'); }
-function atalhoEditarEstrutura() { const btn = document.querySelector('a[data-target="tela-ferramentas"]'); mostrarTela('tela-ferramentas', btn); editarModulo(moduloAtualId); }
-
-// DINÂMICO - NOVA GRADE MODERNA
-function alternarFormularioDinamico(forcar=false) {
-    const wrap = document.getElementById('form-dinamico-wrapper');
-    if(wrap.style.display === 'none' || forcar) {
-        if(!forcar) { document.getElementById('form-dinamico').reset(); document.getElementById('editIdDinamico').value = ""; }
-        wrap.style.display = 'block';
-    } else { wrap.style.display = 'none'; }
-}
-
-function listarRegistrosDinamicos(config) {
-    const dados = getDados('custom_data_' + config.id).reverse();
-    const lista = document.getElementById('lista-dinamica-registros'); 
-    lista.innerHTML = '';
-    
-    if(dados.length === 0) return lista.innerHTML = '<div class="col-12 text-center text-muted py-5"><i class="fas fa-folder-open fa-2x mb-3 opacity-25"></i><p>Nenhum registro encontrado neste módulo.</p></div>';
-    
-    let campoTitulo = config.campos.find(c => c.type === 'text') || config.campos[0];
-    let campoMoney = config.campos.find(c => c.type === 'money');
-    let campoDate = config.campos.find(c => c.type === 'date');
-
-    dados.forEach(d => {
-        let titulo = d[campoTitulo.variable] || '#' + d.id;
-        if(campoTitulo.type === 'client_ref') {
-             const cli = getDados('clientes').find(c => c.id == d[campoTitulo.variable]);
-             if(cli) titulo = cli.nome;
-        }
-
-        let infoRows = '';
-        let cont = 0;
-        config.campos.forEach(c => {
-            if(c.variable !== campoTitulo.variable && cont < 3) {
-                let val = d[c.variable];
-                if(c.type === 'money' && val) val = `R$ ${parseFloat(val).toFixed(2)}`;
-                if(c.type === 'date' && val) val = val.split('-').reverse().join('/');
-                if(val) {
-                    let icon = 'circle';
-                    if(c.type === 'money') icon = 'dollar-sign';
-                    if(c.type === 'date') icon = 'calendar';
-                    if(c.type === 'client_ref') icon = 'user';
-                    
-                    infoRows += `<div class="dynamic-card-row"><i class="fas fa-${icon} fa-xs"></i> <span>${val}</span></div>`;
-                    cont++;
-                }
-            }
-        });
-
-        let finControlHTML = '';
-        let borderClass = 'border-start border-4 border-light'; 
-
-        if(campoMoney && campoDate) {
-            const currentStatus = d.fin_snapshot ? d.fin_snapshot.tipo : 'none';
-            if(currentStatus === 'receita') borderClass = 'border-start border-4 border-success';
-            else if(currentStatus === 'despesa') borderClass = 'border-start border-4 border-danger';
-
-            finControlHTML = `
-            <div class="fin-control-box">
-                <label class="small fw-bold text-success mb-1 d-block" style="font-size:0.7rem">INTEGRAÇÃO FINANCEIRA</label>
-                <select class="form-select form-select-sm" style="font-size:0.75rem;" onchange="atualizarStatusFinanceiroRapido('${config.id}', ${d.id}, this.value)">
-                    <option value="none" ${currentStatus === 'none' ? 'selected' : ''}>Sem lançamento</option>
-                    <option value="receita" ${currentStatus === 'receita' ? 'selected' : ''}>🟢 Receita</option>
-                    <option value="despesa" ${currentStatus === 'despesa' ? 'selected' : ''}>🔴 Despesa</option>
-                </select>
-            </div>`;
-        }
-
-        lista.innerHTML += `
-        <div class="col-md-6 col-lg-4">
-            <div class="dynamic-card ${borderClass}">
-                <div class="dynamic-card-header">
-                    <span class="text-truncate">${titulo}</span>
-                    <span class="badge bg-light text-secondary border rounded-pill" style="font-size:0.65rem">#${d.id}</span>
-                </div>
-                <div class="dynamic-card-body">
-                    ${infoRows}
-                    ${finControlHTML}
-                </div>
-                <div class="dynamic-card-footer d-flex gap-2">
-                     <button class="btn btn-primary btn-sm flex-grow-1" onclick="editarRegistroDinamico(${d.id})"><i class="fas fa-edit me-1"></i> Editar</button>
-                     <button class="btn btn-outline-danger btn-sm" onclick="excluirRegistroDinamico('${config.id}', ${d.id})"><i class="fas fa-trash-alt"></i></button>
-                </div>
-            </div>
-        </div>`;
-    });
-}
-
-function atualizarStatusFinanceiroRapido(modId, regId, novoStatus) {
-    const modulos = getDados('custom_modules');
-    const config = modulos.find(m => m.id === modId);
-    const key = 'custom_data_' + modId;
-    let dados = getDados(key);
-    const idx = dados.findIndex(d => d.id === regId);
-    
-    if(idx > -1) {
-        const reg = dados[idx];
-        const campoMoney = config.campos.find(c => c.type === 'money');
-        const campoDate = config.campos.find(c => c.type === 'date');
-
-        if(campoMoney && campoDate) {
-            reg.fin_snapshot = {
-                tipo: novoStatus,
-                valor: parseFloat(reg[campoMoney.variable]) || 0,
-                data: reg[campoDate.variable] || null
-            };
-            dados[idx] = reg;
-            setDados(key, dados);
-            listarRegistrosDinamicos(config);
-        }
-    }
+    form.style.display = isVisible ? 'none' : 'block';
 }
 
 function construirFormularioDinamico(config) {
-    const area = document.getElementById('campos-dinamicos-area'); area.innerHTML = '';
-    const areaFin = document.getElementById('area-integracao-financeira');
-    
-    const campoMoney = config.campos.find(c => c.type === 'money');
-    const campoDate = config.campos.find(c => c.type === 'date');
+    const area = document.getElementById('campos-dinamicos-area');
+    area.innerHTML = '';
 
-    if(campoMoney && campoDate) {
-        areaFin.style.display = 'block';
-        document.getElementById('fin_source_money_field').value = campoMoney.variable;
-        document.getElementById('fin_source_date_field').value = campoDate.variable;
-        document.getElementById('fin_integracao_tipo').value = 'none'; 
-    } else {
-        areaFin.style.display = 'none';
-        document.getElementById('fin_source_money_field').value = '';
-    }
+    config.campos.forEach(campo => {
+        let inputHtml = '';
+        const idCampo = `field_input_${campo.variable}`;
 
-    config.campos.forEach(c => {
-        let html = '';
-        if(c.type === 'text') html = `<input type="text" class="form-control" id="field_input_${c.variable}">`;
-        if(c.type === 'number') html = `<input type="number" class="form-control formula-trigger" id="field_input_${c.variable}">`;
-        if(c.type === 'money') html = `<div class="input-group"><span class="input-group-text">R$</span><input type="number" step="0.01" class="form-control formula-trigger" id="field_input_${c.variable}"></div>`;
-        if(c.type === 'date') html = `<input type="date" class="form-control" id="field_input_${c.variable}">`;
-        if(c.type === 'select') html = `<select class="form-select" id="field_input_${c.variable}"><option value="">...</option>${c.options.map(o=>`<option>${o}</option>`).join('')}</select>`;
-        if(c.type === 'formula') html = `<input type="text" class="form-control bg-light" readonly id="field_input_${c.variable}" placeholder="Auto">`;
-        if(c.type === 'multiselect') html = `<select class="form-select" multiple id="field_input_${c.variable}" style="height:80px">${c.options.map(o=>`<option>${o}</option>`).join('')}</select><small class="text-muted" style="font-size:0.7em">Segure Ctrl para selecionar vários</small>`;
-        
-        if(c.type === 'client_ref') {
-            const clientes = getDados('clientes').sort((a,b)=>a.nome.localeCompare(b.nome));
-            const opts = clientes.map(cli => `<option value="${cli.id}">${cli.nome} (#${cli.id})</option>`).join('');
-            html = `<select class="form-select" id="field_input_${c.variable}"><option value="">Selecione um cliente...</option>${opts}</select>`;
+        if(campo.type === 'text') {
+            inputHtml = `<input type="text" class="form-control" id="${idCampo}" name="${campo.variable}">`;
+        } else if (campo.type === 'number') {
+            inputHtml = `<input type="number" step="any" class="form-control formula-trigger" id="${idCampo}" name="${campo.variable}">`;
+        } else if (campo.type === 'money') {
+            inputHtml = `
+                <div class="input-group">
+                    <span class="input-group-text">R$</span>
+                    <input type="number" step="0.01" class="form-control formula-trigger" id="${idCampo}" name="${campo.variable}">
+                </div>`;
+        } else if (campo.type === 'date') {
+            inputHtml = `<input type="date" class="form-control" id="${idCampo}" name="${campo.variable}">`;
+        } else if (campo.type === 'select') {
+            let opts = campo.options.map(o => `<option value="${o}">${o}</option>`).join('');
+            inputHtml = `<select class="form-select" id="${idCampo}" name="${campo.variable}"><option value="">Selecione...</option>${opts}</select>`;
+        } else if (campo.type === 'multiselect') {
+            let checks = campo.options.map(o => `
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="${campo.variable}" value="${o}">
+                    <label class="form-check-label small">${o}</label>
+                </div>
+            `).join('');
+            inputHtml = `<div>${checks}</div>`;
+        } else if (campo.type === 'formula') {
+            inputHtml = `<input type="text" class="form-control bg-light fw-bold" id="${idCampo}" name="${campo.variable}" readonly placeholder="Calculado automaticamente...">`;
         }
 
-        area.innerHTML += `<div class="col-12"><label class="small fw-bold text-secondary mb-1">${c.label}</label>${html}</div>`;
+        const div = document.createElement('div');
+        div.className = 'col-12';
+        if(campo.type === 'number' || campo.type === 'money' || campo.type === 'date') div.className = 'col-6';
+        
+        div.innerHTML = `<label class="form-label small">${campo.label}</label>${inputHtml}`;
+        area.appendChild(div);
     });
-    document.querySelectorAll('.formula-trigger').forEach(t => t.addEventListener('input', ()=>recalcularFormulas(config)));
+
+    // Adiciona Listeners para Fórmulas
+    const triggers = document.querySelectorAll('.formula-trigger');
+    triggers.forEach(t => t.addEventListener('input', () => recalcularFormulas(config)));
 }
+
 function recalcularFormulas(config) {
-    let vals = {};
-    config.campos.forEach(c => { if(c.type==='number'||c.type==='money') vals[c.variable] = parseFloat(document.getElementById(`field_input_${c.variable}`).value)||0; });
-    config.campos.filter(c=>c.type==='formula').forEach(f => {
-        let expr = f.formula;
-        for(const[k,v] of Object.entries(vals)) expr = expr.replace(new RegExp(`\\b${k}\\b`,'g'), v);
-        try { document.getElementById(`field_input_${f.variable}`).value = eval(expr.replace(/[^0-9+\-*/(). ]/g, '')).toFixed(2); } catch(e){}
+    // 1. Pega valores atuais
+    let valores = {};
+    config.campos.forEach(c => {
+        if(c.type === 'number' || c.type === 'money') {
+            const el = document.getElementById(`field_input_${c.variable}`);
+            valores[c.variable] = parseFloat(el.value) || 0;
+        }
+    });
+
+    // 2. Processa campos de fórmula
+    config.campos.filter(c => c.type === 'formula').forEach(f => {
+        let expressao = f.formula;
+        // Substituir variaveis pelos valores
+        for (const [key, val] of Object.entries(valores)) {
+            // Regex simples para substituir palavra exata
+            const regex = new RegExp(`\\b${key}\\b`, 'g');
+            expressao = expressao.replace(regex, val);
+        }
+
+        try {
+            // Eval seguro apenas para matemática simples
+            // Remove caracteres perigosos, deixa so numeros e operadores
+            const sanitized = expressao.replace(/[^0-9+\-*/(). ]/g, '');
+            const resultado = eval(sanitized); 
+            document.getElementById(`field_input_${f.variable}`).value = isNaN(resultado) ? 0 : resultado.toFixed(2);
+        } catch (e) {
+            console.error("Erro na formula", e);
+        }
     });
 }
+
 function salvarRegistroDinamico() {
     const modulos = getDados('custom_modules');
     const config = modulos.find(m => m.id === moduloAtualId);
-    const editId = document.getElementById('editIdDinamico').value;
     
-    let reg = { id: editId ? parseInt(editId) : Date.now() };
-    
-    config.campos.forEach(c => { 
+    let registro = { id: Date.now() };
+    let financeiroUpdate = []; // Lista de updates financeiros
+
+    // Coleta dados
+    config.campos.forEach(c => {
         const el = document.getElementById(`field_input_${c.variable}`);
-        if(el) {
-            if(c.type === 'multiselect') {
-                reg[c.variable] = Array.from(el.selectedOptions).map(o => o.value);
-            } else {
-                reg[c.variable] = el.value; 
+        if(!el && c.type !== 'multiselect') return;
+
+        if(c.type === 'multiselect') {
+            const checks = document.querySelectorAll(`input[name="${c.variable}"]:checked`);
+            registro[c.variable] = Array.from(checks).map(cb => cb.value).join(', ');
+        } else {
+            registro[c.variable] = el.value;
+            
+            // Lógica Financeira Integrada
+            if(c.type === 'money' && c.finance) {
+                const valor = parseFloat(el.value) || 0;
+                if(valor > 0) {
+                    financeiroUpdate.push({
+                        tipo: c.financeType,
+                        valor: valor,
+                        descricao: `${config.nome}: ${c.label}`
+                    });
+                }
             }
         }
     });
 
-    const varMoney = document.getElementById('fin_source_money_field').value;
-    const varDate = document.getElementById('fin_source_date_field').value;
-    const tipoFin = document.getElementById('fin_integracao_tipo').value;
+    // Salva Registro do Módulo
+    const keyData = 'custom_data_' + moduloAtualId;
+    let dados = getDados(keyData);
+    dados.push(registro);
+    setDados(keyData, dados);
 
-    if(varMoney && varDate && tipoFin !== 'none') {
-        reg.fin_snapshot = {
-            tipo: tipoFin,
-            valor: reg[varMoney] || 0,
-            data: reg[varDate] || null
-        };
-    } else {
-        reg.fin_snapshot = { tipo: 'none' };
-    }
-
-    const key = 'custom_data_' + moduloAtualId;
-    let dados = getDados(key);
-    if(editId) { const idx = dados.findIndex(d=>d.id==editId); if(idx>-1) dados[idx] = reg; } else { dados.push(reg); }
-    setDados(key, dados); alternarFormularioDinamico(); listarRegistrosDinamicos(config);
-}
-function editarRegistroDinamico(id) {
-    const config = getDados('custom_modules').find(m => m.id === moduloAtualId);
-    const dados = getDados('custom_data_' + moduloAtualId);
-    const reg = dados.find(d => d.id === id);
-    if(!reg) return;
-    alternarFormularioDinamico(true);
-    document.getElementById('editIdDinamico').value = reg.id;
-    
-    config.campos.forEach(c => { 
-        const el = document.getElementById(`field_input_${c.variable}`); 
-        if(el) {
-             if(c.type === 'multiselect') {
-                 Array.from(el.options).forEach(o => o.selected = reg[c.variable] && reg[c.variable].includes(o.value));
-             } else {
-                 el.value = reg[c.variable]; 
-             }
-        }
-    });
-
-    if(reg.fin_snapshot) {
-        document.getElementById('fin_integracao_tipo').value = reg.fin_snapshot.tipo;
-    } else {
-        document.getElementById('fin_integracao_tipo').value = 'none';
-    }
-
-    recalcularFormulas(config);
-}
-function excluirRegistroDinamico(modId, regId) {
-    if(confirm("Excluir?")) {
-        const key = 'custom_data_' + modId;
-        setDados(key, getDados(key).filter(d => d.id !== regId));
-        listarRegistrosDinamicos(getDados('custom_modules').find(m=>m.id===modId));
-    }
-}
-
-// ... (Restante das funções auxiliares mantidas) ...
-function salvarCliente() {
-    const nome = document.getElementById("nomeCliente").value.trim();
-    if(!nome) return alert("Nome obrigatório");
-    let clientes = getDados("clientes");
-    const idBusca = document.getElementById("buscarIdCliente").value;
-    const novoId = clientes.length > 0 ? Math.max(...clientes.map(c=>parseInt(c.id)))+1 : 1;
-    const cliente = { id: idBusca || novoId.toString(), nome, instagram: document.getElementById("instagramCliente").value, filho: document.getElementById("filhoCliente").value, idade: document.getElementById("idadeCliente").value, postagem: document.getElementById("postagemCliente").value };
-    if(idBusca) { const idx = clientes.findIndex(c=>c.id==idBusca); if(idx>-1) clientes[idx] = cliente; } else { clientes.push(cliente); }
-    setDados("clientes", clientes); limparFormularioCliente(); listarClientes();
-}
-function listarClientes() {
-    const lista = document.getElementById("listaClientes"); lista.innerHTML = "";
-    const clientes = getDados("clientes").sort((a,b)=>a.nome.localeCompare(b.nome));
-    clientes.forEach(c => lista.innerHTML += `<li class="list-group-item d-flex justify-content-between"><div style="cursor:pointer;flex:1" onclick="carregarClienteNoForm('${c.id}')"><strong>${c.nome}</strong> #${c.id}</div><button class="btn btn-sm btn-outline-danger" onclick="excluirCliente('${c.id}')"><i class="fas fa-trash"></i></button></li>`);
-    const dl = document.getElementById("sugestoesClientes"); dl.innerHTML = ""; clientes.forEach(c => dl.innerHTML += `<option value="${c.nome}">`);
-}
-function carregarClienteNoForm(id) {
-    const c = getDados("clientes").find(x=>x.id==id);
-    if(c) {
-        document.getElementById("buscarIdCliente").value = c.id; document.getElementById("nomeCliente").value = c.nome;
-        document.getElementById("instagramCliente").value = c.instagram; document.getElementById("filhoCliente").value = c.filho;
-        document.getElementById("idadeCliente").value = c.idade; document.getElementById("postagemCliente").value = c.postagem;
-        document.getElementById("btnSalvarCliente").innerHTML = "🔄 Atualizar"; window.scrollTo(0,0);
-    }
-}
-function limparFormularioCliente() {
-    document.getElementById("nomeCliente").value = ""; document.getElementById("instagramCliente").value = "";
-    document.getElementById("filhoCliente").value = ""; document.getElementById("idadeCliente").value = "";
-    document.getElementById("buscarIdCliente").value = ""; document.getElementById("btnSalvarCliente").innerHTML = "💾 Salvar";
-}
-function excluirCliente(id) { if(confirm("Excluir?")) { setDados("clientes", getDados("clientes").filter(c=>c.id!=id)); listarClientes(); } }
-function importarClientePorTexto() {
-    const lines = document.getElementById("campoTextoImportacao").value.split('\n');
-    let nome = ""; lines.forEach(l => { if(l.toLowerCase().includes("nome:")) nome = l.split(":")[1].trim(); });
-    if(nome) { document.getElementById("nomeCliente").value = nome; document.getElementById("areaImportacao").style.display = "none"; }
-}
-function toggleImportacaoTexto() { const d = document.getElementById("areaImportacao"); d.style.display = d.style.display==="none"?"block":"none"; }
-function carregarClientesSelect() {
-    const opts = '<option value="">Selecione...</option>' + getDados("clientes").sort((a,b)=>a.nome.localeCompare(b.nome)).map(c=>`<option value="${c.id}">#${c.id} - ${c.nome}</option>`).join('');
-    document.querySelectorAll('#idClienteSelect, #idClienteAlbumSelect').forEach(s => { if(s) s.innerHTML = opts; });
-}
-function selecionarClientePorID(id) { const s = document.getElementById("idClienteSelect"); s.value = id || ""; }
-function atualizarRestante() { document.getElementById("valorNoDia").value = ((parseFloat(document.getElementById("valorPacote").value)||0) - (parseFloat(document.getElementById("reservaValor").value)||0)).toFixed(2); }
-function agendar() {
-    const idCliente = document.getElementById("idClienteSelect").value;
-    if(!idCliente) return alert("Selecione cliente");
-    const clientes = getDados("clientes");
-    const ags = getDados("agendamentos");
-    const novoId = ags.length > 0 ? Math.max(...ags.map(a=>a.id))+1 : 1;
-    ags.push({
-        id: novoId, idCliente, nome: clientes.find(c=>c.id==idCliente).nome,
-        data: document.getElementById("dataAgenda").value, hora: document.getElementById("horaInicio").value, fim: document.getElementById("horaFim").value,
-        tipo: document.getElementById("tipoSessao").value, tema: document.getElementById("temaSessao").value, pacote: document.getElementById("pacoteSessao").value,
-        valorPacote: parseFloat(document.getElementById("valorPacote").value)||0, reserva: parseFloat(document.getElementById("reservaValor").value)||0, valorDia: parseFloat(document.getElementById("valorNoDia").value)||0,
-        status: 'Agendado'
-    });
-    setDados("agendamentos", ags); alert("Agendado!"); document.querySelector('a[data-target="tela-inicio"]').click();
-}
-function listarProximos() {
-    const lista = document.getElementById("listaProximosAgendamentos"); lista.innerHTML = "";
-    const hoje = new Date().toISOString().split('T')[0];
-    const ags = getDados("agendamentos").filter(a=>a.data>=hoje && a.status!=='Finalizado').sort((a,b)=>a.data.localeCompare(b.data));
-    if(ags.length===0) return lista.innerHTML = "<li class='list-group-item text-muted text-center'>Nenhuma sessão futura.</li>";
-    ags.forEach(a => {
-        lista.innerHTML += `<li class="list-group-item">
-            <div class="d-flex justify-content-between"><strong>${new Date(a.data+'T00:00').toLocaleDateString('pt-BR')} - ${a.hora}</strong> <span class="badge bg-secondary">${a.id}</span></div>
-            <div class="text-success fw-bold">${a.nome}</div><small>${a.tipo}</small>
-            <div class="d-flex justify-content-between mt-2 align-items-center"><small>Restante: <b>R$ ${a.valorDia.toFixed(2)}</b></small>
-            <div><button class="btn btn-sm btn-outline-primary" onclick="prepararMensagem(${a.id})"><i class="fas fa-whatsapp"></i></button>
-            <button class="btn btn-sm btn-success" onclick="abrirModalFinalizar(${a.id})">✔</button>
-            <button class="btn btn-sm btn-outline-danger" onclick="excluirAgendamento(${a.id})"><i class="fas fa-trash"></i></button></div></div></li>`;
-    });
-}
-function excluirAgendamento(id) { 
-    if(confirm("Excluir agendamento? Isso limpará também o financeiro vinculado (receitas e despesas).")) {
-        setDados("agendamentos", getDados("agendamentos").filter(a=>a.id!=id)); 
-        setDados("despesas", getDados("despesas").filter(d=>d.idAgendamento != id));
-        listarProximos(); 
-        renderizarCalendario();
-        alert("Agendamento e financeiro excluídos.");
-    } 
-}
-let mesAtual = new Date().getMonth(), anoAtual = new Date().getFullYear();
-function mudarMes(d) { mesAtual+=d; if(mesAtual>11){mesAtual=0;anoAtual++;} if(mesAtual<0){mesAtual=11;anoAtual--;} renderizarCalendario(); }
-
-function renderizarCalendario() {
-    const c = document.getElementById("calendarioAgendamentos"); c.innerHTML = "";
-    document.getElementById("mesAtualLabel").textContent = `${['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'][mesAtual]} ${anoAtual}`;
-    
-    // Obter cores personalizadas (DINÂMICO)
-    const colors = getDados('system_legend_colors') || DEFAULT_LEGEND_COLORS;
-
-    const firstDay = new Date(anoAtual, mesAtual, 1).getDay();
-    const days = new Date(anoAtual, mesAtual+1, 0).getDate();
-    const grid = document.createElement("div"); grid.className = "calendar";
-    for(let i=0; i<firstDay; i++) grid.appendChild(document.createElement("div"));
-    
-    const ags = getDados("agendamentos");
-    
-    for(let d=1; d<=days; d++) {
-        const dd = document.createElement("div"); dd.className = "calendar-day"; dd.innerHTML = `<span>${d}</span>`;
-        const dt = `${anoAtual}-${String(mesAtual+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-        const evs = ags.filter(a=>a.data===dt && a.status!=='Finalizado');
+    // Processa Integração Financeira
+    if(financeiroUpdate.length > 0) {
+        let despesas = getDados('despesas'); // Vamos usar a mesma estrutura ou adaptar
+        // Nota: O sistema original só tinha "despesas" com estrutura fixa.
+        // Vamos adaptar: se for Receita, vamos colocar como "valorPacote" em um agendamento fictício ou criar uma estrutura 'extrato_financeiro' melhor.
+        // PARA MANTER COMPATIBILIDADE: Vamos salvar como Despesa no array 'despesas' se for despesa.
+        // Se for receita, o dashboard atual só lê agendamentos. Vou injetar no array 'agendamentos' como um item 'Extra'.
         
-        evs.forEach(a => { 
-            // Lógica de cores atualizada para busca exata ou fallback
-            let corEscolhida = colors[a.tipo] || '#2f5d3f'; // Verde padrão do sistema se não achar
-
-            const b = document.createElement("div"); 
-            b.className = "barra-cor";
-            b.style.backgroundColor = corEscolhida;
-            dd.appendChild(b); 
+        financeiroUpdate.forEach(item => {
+            if(item.tipo === 'despesa') {
+                despesas.push({
+                    idAgendamento: 'MOD_' + registro.id,
+                    data: new Date().toISOString().split('T')[0],
+                    uber: 0, album: 0, outras: item.valor, // Joga em 'outras'
+                    total: item.valor
+                });
+            } else {
+                // Hack para Receita: Cria um agendamento 'fake' finalizado que conta como receita
+                let agendamentos = getDados('agendamentos');
+                agendamentos.push({
+                    id: 99000 + Math.floor(Math.random() * 1000), // ID alto para não conflitar
+                    idCliente: '0',
+                    nome: item.descricao, // Ex: Venda Produto X
+                    data: new Date().toISOString().split('T')[0],
+                    hora: '00:00', fim: '00:00',
+                    tipo: 'Receita Extra',
+                    pacote: 'Módulo Personalizado',
+                    valorPacote: item.valor, // Conta como receita total
+                    reserva: 0, valorDia: 0,
+                    status: 'Finalizado' // Para não aparecer na agenda mas contar no financeiro
+                });
+                setDados('agendamentos', agendamentos);
+            }
         });
-
-        if(evs.length>0) dd.onclick = () => { document.getElementById("eventosDoDia").style.display="block"; document.getElementById("eventosDoDia").innerHTML = `<strong>Dia ${d}:</strong><br>` + evs.map(a=>`${a.hora} - ${a.nome}`).join('<br>'); };
-        grid.appendChild(dd);
+        setDados('despesas', despesas);
     }
-    c.appendChild(grid);
 
-    // Atualizar Legenda Visualmente (DINÂMICO)
-    const legendaDiv = document.getElementById("legendaCalendario");
-    legendaDiv.innerHTML = '';
-    
-    // Ordenar chaves para exibição consistente
-    const keys = Object.keys(colors).sort();
-    if(keys.length === 0) {
-        legendaDiv.innerHTML = '<span class="text-muted small">Nenhuma cor de legenda configurada.</span>';
-    } else {
-        keys.forEach(tipo => {
-            const cor = colors[tipo];
-            legendaDiv.innerHTML += `
-              <div class="legenda-item"><div class="legenda-bolinha" style="background:${cor}"></div> ${tipo}</div>
-            `;
-        });
-    }
+    alert("Registro salvo com sucesso!");
+    alternarFormularioDinamico();
+    listarRegistrosDinamicos(config);
 }
 
-function toggleAgendamentos() { const l = document.getElementById("listaProximosAgendamentos"); l.style.display = l.style.display==="none"?"block":"none"; }
-function buscarAgendamentosPorNome(termo) {
-    const ul = document.getElementById("resultadosPorNome"); ul.innerHTML = "";
-    if(termo.length < 3) return;
-    getDados("agendamentos").filter(a => a.nome.toLowerCase().includes(termo.toLowerCase())).forEach(a => {
-        ul.innerHTML += `<li class="list-group-item small">${a.data.split('-').reverse().slice(0,2).join('/')} - ${a.nome} (${a.status})</li>`;
-    });
-}
-function salvarAlbum() {
-    const id = document.getElementById("idClienteAlbumSelect").value;
-    if(!id) return alert("Selecione cliente");
-    let albs = getDados("albuns").filter(a=>a.idCliente!=id);
-    albs.push({ idCliente: id, nome: getDados("clientes").find(c=>c.id==id).nome, tipo: document.getElementById("tipoAlbum").value, fase: document.getElementById("faseAlbum").value });
-    setDados("albuns", albs); listarAlbuns(); alert("Salvo");
-}
-function listarAlbuns() {
-    const l = document.getElementById("listaAlbuns"); l.innerHTML = "";
-    getDados("albuns").forEach(a => l.innerHTML += `<li class="list-group-item d-flex justify-content-between"><div><strong>${a.nome}</strong><br><span class="badge bg-primary">${a.tipo}</span> <span class="badge bg-warning text-dark">${a.fase}</span></div><button class="btn btn-sm btn-outline-danger" onclick="excluirAlbum('${a.idCliente}')">X</button></li>`);
-}
-function excluirAlbum(id) { setDados("albuns", getDados("albuns").filter(a=>a.idCliente!=id)); listarAlbuns(); }
-function abrirModalFinalizar(id) { document.getElementById("finalizarId").value = id; new bootstrap.Modal(document.getElementById('finalizarModal')).show(); }
-function salvarDespesasEFinalizar() {
-    const id = parseInt(document.getElementById("finalizarId").value);
-    const ags = getDados("agendamentos");
-    const idx = ags.findIndex(a=>a.id==id);
-    if(idx>-1) {
-        ags[idx].status = "Finalizado"; setDados("agendamentos", ags);
-        let ds = getDados("despesas");
-        ds.push({ idAgendamento: id, data: new Date().toISOString().split('T')[0], uber: parseFloat(document.getElementById("finalizarUber").value)||0, album: parseFloat(document.getElementById("finalizarAlbum").value)||0, outras: parseFloat(document.getElementById("finalizarOutras").value)||0 });
-        setDados("despesas", ds); alert("Finalizado!"); bootstrap.Modal.getInstance(document.getElementById('finalizarModal')).hide(); listarProximos(); renderizarCalendario();
-    }
-}
-function inicializarTemplatesPadrao() {
-    const templates = getDados('msg_templates');
-    if (templates.length === 0) {
-        const padroes = [
-            { id: 'tmpl_1', titulo: 'Confirmação', conteudo: "Olá {nome}! Tudo bem? 😊\n\nPassando para confirmar seu agendamento:\n🗓 Data: {data}\n🕒 Hora: {hora}\n📸 Pacote: {pacote}\n\nO valor restante é R$ {restante}. \n\nQualquer dúvida estou à disposição!" },
-            { id: 'tmpl_2', titulo: 'Lembrete (1 dia antes)', conteudo: "Oie {nome}! \nLembrando que nossa sessão é amanhã, dia {data} às {hora}. \n\n📍 Endereço: [Seu Endereço Aqui]\n\nNos vemos lá!" }
-        ];
-        setDados('msg_templates', padroes);
-    }
-}
-function switchMsgTab(tab) {
-    document.getElementById('msg-tab-gerar').style.display = tab === 'gerar' ? 'block' : 'none';
-    document.getElementById('msg-tab-modelos').style.display = tab === 'modelos' ? 'block' : 'none';
-    document.querySelectorAll('#msgTabs .nav-link').forEach(l => l.classList.remove('active'));
-    event.target.classList.add('active');
-    if(tab === 'modelos') listarModelosMsg();
-    if(tab === 'gerar') carregarOpcoesModelos();
-}
-function carregarOpcoesModelos() {
-    const templates = getDados('msg_templates');
-    const select = document.getElementById('selectModeloMsg');
-    const valorAtual = select.value;
-    select.innerHTML = '<option value="">Selecione um tipo...</option>';
-    templates.forEach(t => {
-        const opt = document.createElement('option');
-        opt.value = t.id; opt.textContent = t.titulo;
-        select.appendChild(opt);
-    });
-    if(valorAtual) select.value = valorAtual; 
-}
-function listarModelosMsg() {
-    const lista = document.getElementById('listaModelosMsg');
-    const templates = getDados('msg_templates');
+function listarRegistrosDinamicos(config) {
+    const keyData = 'custom_data_' + config.id;
+    const dados = getDados(keyData).reverse(); // Mais recentes primeiro
+    const lista = document.getElementById('lista-dinamica-registros');
     lista.innerHTML = '';
-    templates.forEach(t => {
+
+    if(dados.length === 0) {
+        lista.innerHTML = '<li class="list-group-item text-muted text-center py-3">Nenhum registro encontrado.</li>';
+        return;
+    }
+
+    dados.forEach(d => {
+        // Tenta achar o primeiro campo de texto para ser o título
+        const campoTitulo = config.campos.find(c => c.type === 'text') || config.campos[0];
+        const titulo = d[campoTitulo.variable] || 'Registro #' + d.id;
+
+        // Monta resumo dos valores
+        let detalhes = config.campos.map(c => {
+            if(c.variable === campoTitulo.variable) return null;
+            let val = d[c.variable];
+            if(c.type === 'money') val = `R$ ${parseFloat(val||0).toFixed(2)}`;
+            return `<span class="badge bg-light text-dark border me-1">${c.label}: ${val}</span>`;
+        }).filter(x => x).join('');
+
         const li = document.createElement('li');
-        li.className = 'list-group-item d-flex justify-content-between align-items-center';
-        li.innerHTML = `<div><strong>${t.titulo}</strong></div><div><button class="btn btn-sm btn-outline-primary" onclick="editarModeloMsg('${t.id}')"><i class="fas fa-pen"></i></button><button class="btn btn-sm btn-outline-danger" onclick="excluirModeloMsg('${t.id}')"><i class="fas fa-trash"></i></button></div>`;
+        li.className = 'list-group-item';
+        li.innerHTML = `
+            <div class="d-flex justify-content-between">
+                <span class="fw-bold">${titulo}</span>
+                <button class="btn btn-sm text-danger" onclick="excluirRegistroDinamico('${config.id}', ${d.id})">&times;</button>
+            </div>
+            <div class="mt-1">${detalhes}</div>
+        `;
         lista.appendChild(li);
     });
 }
-function salvarModeloMsg() {
-    const titulo = document.getElementById('editorMsgTitulo').value.trim();
-    const conteudo = document.getElementById('editorMsgConteudo').value.trim();
-    const id = document.getElementById('editorMsgId').value;
-    if(!titulo || !conteudo) return alert("Preencha título e conteúdo.");
-    let templates = getDados('msg_templates');
-    if(id) { const index = templates.findIndex(t => t.id === id); if(index > -1) { templates[index].titulo = titulo; templates[index].conteudo = conteudo; }
-    } else { templates.push({ id: 'tmpl_' + Date.now(), titulo: titulo, conteudo: conteudo }); }
-    setDados('msg_templates', templates); alert("Modelo salvo!"); limparEditorMsg(); listarModelosMsg();
-}
-function editarModeloMsg(id) {
-    const templates = getDados('msg_templates');
-    const t = templates.find(x => x.id === id);
-    if(t) {
-        document.getElementById('editorMsgId').value = t.id;
-        document.getElementById('editorMsgTitulo').value = t.titulo;
-        document.getElementById('editorMsgConteudo').value = t.conteudo;
-        window.scrollTo(0,0);
+
+function excluirRegistroDinamico(modId, regId) {
+    if(confirm("Excluir este registro?")) {
+        const key = 'custom_data_' + modId;
+        let dados = getDados(key);
+        dados = dados.filter(d => d.id !== regId);
+        setDados(key, dados);
+        
+        // Recarrega lista
+        const modulos = getDados('custom_modules');
+        const config = modulos.find(m => m.id === modId);
+        listarRegistrosDinamicos(config);
     }
 }
-function excluirModeloMsg(id) { if(confirm("Excluir este modelo?")) { let templates = getDados('msg_templates'); templates = templates.filter(t => t.id !== id); setDados('msg_templates', templates); listarModelosMsg(); } }
-function limparEditorMsg() { document.getElementById('editorMsgId').value = ''; document.getElementById('editorMsgTitulo').value = ''; document.getElementById('editorMsgConteudo').value = ''; }
-function insertVar(text) { const textarea = document.getElementById('editorMsgConteudo'); const start = textarea.selectionStart; const end = textarea.selectionEnd; const value = textarea.value; textarea.value = value.substring(0, start) + text + value.substring(end); textarea.selectionStart = textarea.selectionEnd = start + text.length; textarea.focus(); }
+
+
+/* =================================================================================
+   FUNÇÕES ORIGINAIS DO SISTEMA (MANTIDAS)
+   ================================================================================= */
+// --- CLIENTES ---
+function salvarCliente() {
+    const nome = document.getElementById("nomeCliente").value.trim();
+    if(!nome) return alert("Nome é obrigatório");
+
+    let clientes = getDados("clientes");
+    const idBusca = document.getElementById("buscarIdCliente").value; 
+    const novoId = clientes.length > 0 ? Math.max(...clientes.map(c => parseInt(c.id))) + 1 : 1;
+    
+    const cliente = {
+        id: idBusca || novoId.toString(),
+        nome: nome,
+        instagram: document.getElementById("instagramCliente").value,
+        filho: document.getElementById("filhoCliente").value,
+        idade: document.getElementById("idadeCliente").value,
+        postagem: document.getElementById("postagemCliente").value
+    };
+
+    if(idBusca) {
+        const index = clientes.findIndex(c => c.id == idBusca);
+        if(index > -1) clientes[index] = cliente;
+    } else {
+        clientes.push(cliente);
+    }
+
+    setDados("clientes", clientes);
+    alert("Cliente salvo!");
+    limparFormularioCliente();
+    listarClientes();
+}
+
+function listarClientes() {
+    const lista = document.getElementById("listaClientes");
+    lista.innerHTML = "";
+    const clientes = getDados("clientes").sort((a,b) => a.nome.localeCompare(b.nome));
+
+    clientes.forEach(c => {
+        const li = document.createElement("li");
+        li.className = "list-group-item d-flex justify-content-between align-items-center";
+        li.innerHTML = `
+            <div onclick="carregarClienteNoForm('${c.id}')" style="cursor:pointer; flex:1;">
+                <strong>${c.nome}</strong> <small class="text-muted">#${c.id}</small><br>
+                <small>${c.filho ? 'Filho(a): ' + c.filho : 'Sem dados filho'}</small>
+            </div>
+            <button class="btn btn-sm btn-outline-danger" onclick="excluirCliente('${c.id}')"><i class="fas fa-trash"></i></button>
+        `;
+        lista.appendChild(li);
+    });
+
+    const datalist = document.getElementById("sugestoesClientes");
+    datalist.innerHTML = "";
+    clientes.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c.nome;
+        datalist.appendChild(opt);
+    });
+}
+
+function carregarClienteNoForm(id) {
+    const clientes = getDados("clientes");
+    const c = clientes.find(x => x.id == id);
+    if(c) {
+        document.getElementById("buscarIdCliente").value = c.id;
+        document.getElementById("nomeCliente").value = c.nome;
+        document.getElementById("instagramCliente").value = c.instagram;
+        document.getElementById("filhoCliente").value = c.filho;
+        document.getElementById("idadeCliente").value = c.idade;
+        document.getElementById("postagemCliente").value = c.postagem;
+        document.getElementById("tela-clientes").scrollIntoView();
+    }
+}
+
+function preencherClientePorNome(nome) {
+    const clientes = getDados("clientes");
+    const c = clientes.find(x => x.nome === nome);
+    if(c) carregarClienteNoForm(c.id);
+}
+
+function limparFormularioCliente() {
+    document.querySelector("form").reset();
+    document.getElementById("buscarIdCliente").value = "";
+}
+
+function excluirCliente(id) {
+    if(confirm("Confirma exclusão?")) {
+        let clientes = getDados("clientes");
+        clientes = clientes.filter(c => c.id != id);
+        setDados("clientes", clientes);
+        listarClientes();
+    }
+}
+
+function importarClientePorTexto() {
+    const texto = document.getElementById("campoTextoImportacao").value;
+    const linhas = texto.split('\n');
+    let nome = "";
+    linhas.forEach(l => {
+        if(l.toLowerCase().includes("nome:")) nome = l.split(":")[1].trim();
+    });
+    
+    if(nome) {
+        document.getElementById("nomeCliente").value = nome;
+        alert("Dados extraídos! Complete e salve.");
+        document.getElementById("areaImportacao").style.display = "none";
+    } else {
+        alert("Não consegui identificar o nome no texto.");
+    }
+}
+
+function toggleImportacaoTexto() {
+    const div = document.getElementById("areaImportacao");
+    div.style.display = div.style.display === "none" ? "block" : "none";
+}
+
+// --- AGENDA & CALENDÁRIO ---
+function carregarClientesSelect() {
+    const selects = [document.getElementById("idClienteSelect"), document.getElementById("idClienteAlbumSelect")];
+    const clientes = getDados("clientes").sort((a,b) => a.nome.localeCompare(b.nome));
+    
+    selects.forEach(sel => {
+        if(!sel) return;
+        sel.innerHTML = '<option value="">Selecione pelo ID ou Nome...</option>';
+        clientes.forEach(c => {
+            const opt = document.createElement("option");
+            opt.value = c.id;
+            opt.textContent = `#${c.id} - ${c.nome}`;
+            sel.appendChild(opt);
+        });
+    });
+}
+
+function selecionarClientePorID(id) {
+    const select = document.getElementById("idClienteSelect");
+    if(id) {
+        select.value = id;
+    } else {
+        select.value = "";
+    }
+}
+
+function atualizarRestante() {
+    const pct = parseFloat(document.getElementById("valorPacote").value) || 0;
+    const res = parseFloat(document.getElementById("reservaValor").value) || 0;
+    document.getElementById("valorNoDia").value = (pct - res).toFixed(2);
+}
+
+function agendar() {
+    const idCliente = document.getElementById("idClienteSelect").value;
+    const data = document.getElementById("dataAgenda").value;
+    const hora = document.getElementById("horaInicio").value;
+    
+    if(!idCliente || !data || !hora) return alert("Preencha cliente, data e hora.");
+
+    const clientes = getDados("clientes");
+    const cliente = clientes.find(c => c.id == idCliente);
+
+    let agendamentos = getDados("agendamentos");
+    const novoId = agendamentos.length > 0 ? Math.max(...agendamentos.map(a => a.id)) + 1 : 1;
+
+    const agendamento = {
+        id: novoId,
+        idCliente: idCliente,
+        nome: cliente.nome,
+        data: data,
+        hora: hora,
+        fim: document.getElementById("horaFim").value,
+        tipo: document.getElementById("tipoSessao").value,
+        tema: document.getElementById("temaSessao").value,
+        pacote: document.getElementById("pacoteSessao").value,
+        valorPacote: parseFloat(document.getElementById("valorPacote").value) || 0,
+        reserva: parseFloat(document.getElementById("reservaValor").value) || 0,
+        valorDia: parseFloat(document.getElementById("valorNoDia").value) || 0,
+        status: 'Agendado'
+    };
+
+    agendamentos.push(agendamento);
+    setDados("agendamentos", agendamentos);
+    alert("Agendamento criado!");
+    
+    document.getElementById("valorPacote").value = "";
+    document.getElementById("reservaValor").value = "";
+    document.getElementById("buscaIdClienteAgenda").value = ""; 
+    mostrarTela('tela-inicio');
+}
+
+function listarProximos() {
+    const lista = document.getElementById("listaProximosAgendamentos");
+    lista.innerHTML = "";
+    const hoje = new Date().toISOString().split('T')[0];
+    
+    let agendamentos = getDados("agendamentos");
+    agendamentos = agendamentos.filter(a => a.data >= hoje && a.status !== 'Finalizado').sort((a,b) => a.data.localeCompare(b.data));
+
+    if(agendamentos.length === 0) {
+        lista.innerHTML = "<li class='list-group-item text-center text-muted'>Nenhuma sessão futura.</li>";
+        return;
+    }
+
+    agendamentos.forEach(a => {
+        const dataF = new Date(a.data + 'T00:00').toLocaleDateString('pt-BR');
+        const li = document.createElement("li");
+        li.className = "list-group-item";
+        li.innerHTML = `
+            <div class="d-flex justify-content-between">
+                <strong>${dataF} - ${a.hora}</strong>
+                <span class="badge bg-secondary">${a.id}</span>
+            </div>
+            <div class="fw-bold text-success">${a.nome}</div>
+            <small>${a.tipo} | ${a.pacote}</small>
+            <div class="d-flex justify-content-between mt-2 align-items-center">
+                <small>Restante: <b>R$ ${a.valorDia.toFixed(2)}</b></small>
+                <div>
+                    <button class="btn btn-sm btn-outline-primary" onclick="prepararMensagem(${a.id})"><i class="fas fa-whatsapp"></i></button>
+                    <button class="btn btn-sm btn-success" onclick="abrirModalFinalizar(${a.id})">✔ Finalizar</button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="excluirAgendamento(${a.id})"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        `;
+        lista.appendChild(li);
+    });
+}
+
+function excluirAgendamento(id) {
+    if(confirm("Excluir este agendamento?")) {
+        let agendamentos = getDados("agendamentos");
+        agendamentos = agendamentos.filter(a => a.id != id);
+        setDados("agendamentos", agendamentos);
+        listarProximos();
+        renderizarCalendario();
+    }
+}
+
+// --- CALENDÁRIO ---
+let mesAtual = new Date().getMonth();
+let anoAtual = new Date().getFullYear();
+
+function mudarMes(delta) {
+    mesAtual += delta;
+    if(mesAtual > 11) { mesAtual = 0; anoAtual++; }
+    if(mesAtual < 0) { mesAtual = 11; anoAtual--; }
+    renderizarCalendario();
+}
+
+function renderizarCalendario() {
+    const container = document.getElementById("calendarioAgendamentos");
+    const label = document.getElementById("mesAtualLabel");
+    container.innerHTML = "";
+    const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    label.textContent = `${meses[mesAtual]} ${anoAtual}`;
+    const primeiroDia = new Date(anoAtual, mesAtual, 1).getDay();
+    const diasNoMes = new Date(anoAtual, mesAtual + 1, 0).getDate();
+    const calDiv = document.createElement("div");
+    calDiv.className = "calendar";
+
+    for(let i=0; i<primeiroDia; i++) calDiv.appendChild(document.createElement("div"));
+
+    const agendamentos = getDados("agendamentos");
+    for(let dia=1; dia<=diasNoMes; dia++) {
+        const diaDiv = document.createElement("div");
+        diaDiv.className = "calendar-day";
+        diaDiv.innerHTML = `<span>${dia}</span>`;
+        const dataCheck = `${anoAtual}-${String(mesAtual+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
+        const doDia = agendamentos.filter(a => a.data === dataCheck && a.status !== 'Finalizado');
+        
+        doDia.forEach(a => {
+            const barra = document.createElement("div");
+            barra.className = "barra-cor";
+            if(a.tipo.includes("Aniversário")) barra.classList.add("cal-azul");
+            else if(a.tipo.includes("Gestante")) barra.classList.add("cal-roxo");
+            else if(a.tipo.includes("Smash")) barra.classList.add("cal-laranja");
+            else barra.classList.add("cal-verde");
+            diaDiv.appendChild(barra);
+        });
+
+        if(doDia.length > 0) {
+            diaDiv.onclick = () => {
+                const painel = document.getElementById("eventosDoDia");
+                painel.style.display = "block";
+                painel.innerHTML = `<strong>Dia ${dia}:</strong><br>` + doDia.map(a => `${a.hora} - ${a.nome} (${a.tipo})`).join('<br>');
+            };
+        }
+        calDiv.appendChild(diaDiv);
+    }
+    container.appendChild(calDiv);
+}
+
+// --- ÁLBUNS ---
+function salvarAlbum() {
+    const idCliente = document.getElementById("idClienteAlbumSelect").value;
+    if(!idCliente) return alert("Selecione um cliente");
+    const clientes = getDados("clientes");
+    const cliente = clientes.find(c => c.id == idCliente);
+    let albuns = getDados("albuns");
+    albuns = albuns.filter(a => a.idCliente != idCliente);
+    
+    albuns.push({
+        idCliente: idCliente,
+        nome: cliente.nome,
+        tipo: document.getElementById("tipoAlbum").value,
+        fase: document.getElementById("faseAlbum").value
+    });
+    
+    setDados("albuns", albuns);
+    listarAlbuns();
+    alert("Status do álbum atualizado.");
+}
+
+function listarAlbuns() {
+    const lista = document.getElementById("listaAlbuns");
+    lista.innerHTML = "";
+    const albuns = getDados("albuns");
+    albuns.forEach(a => {
+        const li = document.createElement("li");
+        li.className = "list-group-item d-flex justify-content-between align-items-center";
+        li.innerHTML = `
+            <div>
+                <strong>${a.nome}</strong><br>
+                <span class="badge bg-primary">${a.tipo}</span> <span class="badge bg-warning text-dark">${a.fase}</span>
+            </div>
+            <button class="btn btn-sm btn-outline-danger" onclick="excluirAlbum('${a.idCliente}')">X</button>
+        `;
+        lista.appendChild(li);
+    });
+}
+
+function excluirAlbum(id) {
+    let albuns = getDados("albuns");
+    albuns = albuns.filter(a => a.idCliente != id);
+    setDados("albuns", albuns);
+    listarAlbuns();
+}
+
+// --- FINANCEIRO ---
+function abrirModalFinalizar(id) {
+    document.getElementById("finalizarId").value = id;
+    new bootstrap.Modal(document.getElementById('finalizarModal')).show();
+}
+
+function salvarDespesasEFinalizar() {
+    const id = parseInt(document.getElementById("finalizarId").value);
+    const uber = parseFloat(document.getElementById("finalizarUber").value) || 0;
+    const album = parseFloat(document.getElementById("finalizarAlbum").value) || 0;
+    const outras = parseFloat(document.getElementById("finalizarOutras").value) || 0;
+
+    let agendamentos = getDados("agendamentos");
+    const index = agendamentos.findIndex(a => a.id == id);
+    
+    if(index > -1) {
+        agendamentos[index].status = "Finalizado";
+        setDados("agendamentos", agendamentos);
+        let despesas = getDados("despesas");
+        despesas.push({
+            idAgendamento: id,
+            data: new Date().toISOString().split('T')[0],
+            uber, album, outras,
+            total: uber + album + outras
+        });
+        setDados("despesas", despesas);
+        alert("Sessão finalizada e despesas salvas!");
+        bootstrap.Modal.getInstance(document.getElementById('finalizarModal')).hide();
+        listarProximos();
+        renderizarCalendario();
+    }
+}
+
+function exibirDashboardFinanceiro() {
+    const agendamentos = getDados("agendamentos");
+    const despesas = getDados("despesas");
+    const receitaTotal = agendamentos.reduce((acc, curr) => acc + (curr.valorPacote || 0), 0);
+    const despesaTotal = despesas.reduce((acc, curr) => acc + (curr.total || 0), 0);
+    const lucro = receitaTotal - despesaTotal;
+    const div = document.getElementById("resultadoRelatorio");
+    div.innerHTML = `
+        <div class="row g-2">
+            <div class="col-6">
+                <div class="card p-3 text-center bg-success text-white">
+                    <h6>Receita</h6>
+                    <h3>R$ ${receitaTotal.toFixed(2)}</h3>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card p-3 text-center bg-danger text-white">
+                    <h6>Despesas</h6>
+                    <h3>R$ ${despesaTotal.toFixed(2)}</h3>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card p-3 text-center border-primary text-primary">
+                    <h6>Lucro Líquido Estimado</h6>
+                    <h1>R$ ${lucro.toFixed(2)}</h1>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function gerarRelatorioDespesas() {
+    const despesas = getDados("despesas");
+    let html = "<ul class='list-group mt-3'>";
+    despesas.forEach(d => {
+        html += `<li class='list-group-item'>Data: ${d.data} | Total: R$ ${d.total.toFixed(2)} <small>(Uber: ${d.uber}, Álbum: ${d.album}, Outros: ${d.outras})</small></li>`;
+    });
+    html += "</ul>";
+    document.getElementById("resultadoRelatorio").innerHTML = html;
+}
+
+// --- BACKUP ---
+function exportarBackup() {
+    const data = {
+        clientes: getDados("clientes"),
+        agendamentos: getDados("agendamentos"),
+        albuns: getDados("albuns"),
+        despesas: getDados("despesas"),
+        // Backup dos modulos personalizados
+        custom_modules: getDados("custom_modules")
+    };
+    
+    // Backup dados dos modulos dinamicos
+    const modulos = getDados("custom_modules");
+    modulos.forEach(m => {
+        data['custom_data_' + m.id] = getDados('custom_data_' + m.id);
+    });
+
+    const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `backup_crm_rcf_v4_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+}
+
+function importarBackup(event) {
+    const file = event.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const data = JSON.parse(e.target.result);
+            if(data.clientes) setDados("clientes", data.clientes);
+            if(data.agendamentos) setDados("agendamentos", data.agendamentos);
+            if(data.albuns) setDados("albuns", data.albuns);
+            if(data.despesas) setDados("despesas", data.despesas);
+            if(data.custom_modules) setDados("custom_modules", data.custom_modules);
+            
+            // Restaura dados dinamicos
+            if(data.custom_modules) {
+                data.custom_modules.forEach(m => {
+                    const key = 'custom_data_' + m.id;
+                    if(data[key]) setDados(key, data[key]);
+                });
+            }
+
+            alert("Restauração concluída com sucesso! Recarregando...");
+            location.reload();
+        } catch(err) {
+            alert("Erro no arquivo de backup.");
+        }
+    };
+    reader.readAsText(file);
+}
+
+// --- MENSAGENS ---
+function prepararMensagem(idAgendamento) {
+    document.getElementById("idAgendamentoTexto").value = idAgendamento;
+    gerarTextoWhatsAppPorID();
+    mostrarTela('tela-extra1');
+}
+
 function gerarTextoWhatsAppPorID() {
     const id = document.getElementById("idAgendamentoTexto").value;
-    const idTemplate = document.getElementById("selectModeloMsg").value;
-    if(!id) return; 
     const agendamentos = getDados("agendamentos");
     const agendamento = agendamentos.find(a => a.id == id);
-    if(!agendamento) return document.getElementById("mensagemWhatsTexto").value = "Agendamento não encontrado.";
-    if(!idTemplate) return document.getElementById("mensagemWhatsTexto").value = "Selecione um modelo.";
-    const templates = getDados("msg_templates");
-    const template = templates.find(t => t.id === idTemplate);
-    if(!template) return;
+    if(!agendamento) return alert("Agendamento não encontrado");
+    const diaSemana = new Date(agendamento.data + 'T00:00').toLocaleDateString('pt-BR', { weekday: 'long' });
     const dataFormatada = new Date(agendamento.data + 'T00:00').toLocaleDateString('pt-BR');
-    let texto = template.conteudo;
-    texto = texto.replace(/{nome}/g, agendamento.nome);
-    texto = texto.replace(/{id}/g, agendamento.id);
-    texto = texto.replace(/{data}/g, dataFormatada);
-    texto = texto.replace(/{hora}/g, agendamento.hora);
-    texto = texto.replace(/{pacote}/g, agendamento.pacote || 'Pacote Padrão');
-    texto = texto.replace(/{valor}/g, (agendamento.valorPacote || 0).toFixed(2));
-    texto = texto.replace(/{sinal}/g, (agendamento.reserva || 0).toFixed(2));
-    texto = texto.replace(/{restante}/g, (agendamento.valorDia || 0).toFixed(2));
+
+    const texto = `Olá, ${agendamento.nome}! Tudo bem? 😊
+
+Seu agendamento está confirmado com sucesso!
+Aqui estão os detalhes da sua sessão:
+
+🆔 *ID:* ${agendamento.id}
+📸 *Sessão:* ${agendamento.tipo}
+📦 *Pacote:* ${agendamento.pacote}
+📍 *Data:* ${diaSemana}, ${dataFormatada}
+🕒 *Horário:* ${agendamento.hora} às ${agendamento.fim}
+
+💰 *Valor do Pacote:* R$${(agendamento.valorPacote || 0).toFixed(2)}
+💳 *Sinal Pago:* R$${(agendamento.reserva || 0).toFixed(2)}
+💵 *Restante no Dia:* R$${(agendamento.valorDia || 0).toFixed(2)}
+
+📌 *Local: Rodrigo Costa Fotografia*
+
+*Qualquer dúvida, é só me chamar!*
+✨ _Vai ser um prazer registrar esse momento especial!_
+
+_Atenciosamente,_  
+Rodrigo Costa`;
+
     document.getElementById("mensagemWhatsTexto").value = texto;
 }
-function copiarTexto(elementId) { const texto = document.getElementById(elementId); texto.select(); document.execCommand("copy"); alert("Copiado!"); }
-function abrirWhatsDireto() { const texto = document.getElementById("mensagemWhatsTexto").value; if(!texto) return alert("Gere o texto primeiro."); window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`, '_blank'); }
-function prepararMensagem(id) { document.getElementById("idAgendamentoTexto").value = id; mostrarTela('tela-extra1', document.querySelector('a[data-target="tela-extra1"]')); gerarTextoWhatsAppPorID(); }
-</script>
 
-<div class="modal fade" id="modalDevInfo" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content border-0 shadow">
-      <div class="modal-header bg-dark text-white py-2">
-        <h6 class="modal-title">👨‍💻 Desenvolvedor</h6>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body text-center">
-        <p class="fw-bold mb-1">Rodrigo Costa</p>
-        <p class="small text-muted mb-2">Desenvolvedor do Sistema</p>
-        <p class="mb-1">
-            <i class="fab fa-instagram me-1"></i>
-            <strong>@rodrigocostafotografia</strong>
-        </p>
-        <p class="mb-0">
-            <i class="fas fa-envelope me-1"></i>
-            rcappsistema@gmail.com
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-function abrirDevInfo(){
-    new bootstrap.Modal(document.getElementById('modalDevInfo')).show();
+function copiarTexto(elementId) {
+    const texto = document.getElementById(elementId);
+    texto.select();
+    document.execCommand("copy");
+    alert("Texto copiado!");
 }
 </script>
-
 </body>
 </html>
